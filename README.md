@@ -8,7 +8,7 @@ There is a simple card game called [war](https://www.bicyclecards.com/how-to-pla
 2. The dealer will play with 4 decks and shuffle all 4 decks together so we will have 4 of every card mixed into 4 decks.
 3. For simplicity, if there is a tie the dealer and player will take their respective cards.
 4. Instead of dealing all the cards, after 10 rounds a winner is declared (the person with the most cards).
-5. Multiple players can play at the same time.
+5. Multiple players can play at the same time against the dealer. _Players don't play each other_.
 6. Each player will initiate the round by asking the dealer to deal one card for the player and one card for the dealer.
 7. Each plater can play as fast or as slow as they wish.
  
