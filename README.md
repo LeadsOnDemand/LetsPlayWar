@@ -28,7 +28,7 @@
 ## How to Run the App?
 ### Database
 > * Create the database with the name "**lets_play_war**"
-> * Create a file "**config.js**" containing the password for the database with only a line: \
+> * Create a file "**server/config.js**" containing the password for the database with only a line: \
 >                      ***module.exports = { db_pwd: <THE_PASSWORD_TO_YOUR_DATABASE> };***
 
 ### Server
