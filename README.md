@@ -1,4 +1,27 @@
 # Let's Play War
+
+## SQL Schema
+![alt text](assets/MySQLWorkbenchModel.jpg)
+
+> * **Location**: where the "***war***" happens
+> * **loc_player**: just the intermediate table of a **n-m** relationship (between "***location***" and "***player***")
+> * **Player**: player's information
+> * **score**: record of result for all players
+
+## How to Play?
+![alt text](assets/play.jpg)
+
+> The dealer gives a card for each player and against each player, he (she) has his (her) own card. Result:
+> * If the card of the player is better, he (she) takes his card and the one of the dealer,
+> * If it is tie, the player takes his (her) card and the dealer does the same with his (her),
+> * If the dealer's card is better, he (she) takes his card as well of the one of the player that lost
+> 
+> After 10 rounds, the player(s) with the most cards is (are) the winner(s).  
+
+
+---
+
+# Let's Play War (requirements)
 ## Purpose
 The purpose of this project is to not only test your ability to solve a problem, but also understand how you go about solving a problem. You do not need to complete this project, but the closer you get the easier it is to evaluate. Once you feel you have done enough we will review your results and talk about what decisions you made and why. It is more important to speak to why you made a decision than making the "right" choice.
 
