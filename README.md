@@ -8,7 +8,9 @@
 ## SQL Schema
 ![alt text](assets/MySQLWorkbenchModel.jpg)
 
+> * **Dealer**: the dealer of the game
 > * **Location**: where the "***war***" happens
+> * **loc_dealer**: just the intermediate table of a **n-m** relationship (between "***location***" and "***dealer***")
 > * **loc_player**: just the intermediate table of a **n-m** relationship (between "***location***" and "***player***")
 > * **Player**: player's information
 > * **score**: record of result for all players
@@ -26,7 +28,7 @@
 ## How to Run the App?
 ### Database
 > * Create the database with the name "**lets_play_war**"
-> * Create a file "**config.js**" containing the password for the database with only a line:
+> * Create a file "**config.js**" containing the password for the database with only a line: \
 >                      ***module.exports = { db_pwd: <THE_PASSWORD_TO_YOUR_DATABASE> };***
 
 ### Server
