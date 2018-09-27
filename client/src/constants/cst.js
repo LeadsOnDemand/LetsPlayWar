@@ -4,5 +4,15 @@ export default constants = {
     SPADES: "spades", 
     DIAMS: "diams",
 
-    SET_CARD2PLAYER: ""
+    SET_NEW_GAME: "set_new_game",
+    CARDS_PLAY: "cards_play",
+    CARDS_DISTRIBUTE: "cards_distribute",
+
+    PLAYER_ADD: "player_add",
+    PLAYER_REMOVE: "player_remove",
+    PLAYER_WINS_CARDS: "player_wins_cards",
+    
+    DEALER_ADD: "dealer_add",
+    DEALER_REMOVE: "dealer_remove",
+    DEALER_GET_CARD_BACK: "dealer_get_card_back",
 }
