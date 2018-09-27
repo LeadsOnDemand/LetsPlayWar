@@ -1,5 +1,10 @@
 # Let's Play War
 
+## Technologies (3-tier architecture)
+> * **Front-end**: **React-Redux** (built with: "**create-react-app**"),
+> * **Back-end**: **Express/NodeJS**,
+> * **Database**: **SQL** (with **Sequelize** as ORM).
+
 ## SQL Schema
 ![alt text](assets/MySQLWorkbenchModel.jpg)
 
@@ -13,7 +18,7 @@
 
 > The dealer gives a card for each player and against each player, he (she) has his (her) own card. Result:
 > * If the card of the player is better, he (she) takes his card and the one of the dealer,
-> * If it is tie, the player takes his (her) card and the dealer does the same with his (her),
+> * If it is tie, the player takes his (her) card and the dealer does the same with his (hers),
 > * If the dealer's card is better, he (she) takes his card as well of the one of the player that lost
 > 
 > After 10 rounds, the player(s) with the most cards is (are) the winner(s).  
