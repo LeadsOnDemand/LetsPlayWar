@@ -12,7 +12,5 @@ export default constants = {
     PLAYER_REMOVE: "player_remove",
     PLAYER_WINS_CARDS: "player_wins_cards",
     
-    DEALER_ADD: "dealer_add",
-    DEALER_REMOVE: "dealer_remove",
     DEALER_GET_CARD_BACK: "dealer_get_card_back",
 }
