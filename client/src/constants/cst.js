@@ -1,16 +1,36 @@
-export default constants = {
+const constants = {
     HEARTS: "hearts", 
     CLUBS: "clubs",
     SPADES: "spades", 
     DIAMS: "diams",
 
-    SET_NEW_GAME: "set_new_game",
-    CARDS_PLAY: "cards_play",
+    STATUS_PLAY: "status_play",
+    STATUS_FINISH: "status_finish",
+    STATUS_SELECT_PLAYERS: "status_select_players",
+
+    STATUS_DEALER_ADD: "status_dealer_add",
+    STATUS_LOCATION_ADD: "status_location_add",
+    STATUS_PLAYER_ADD: "status_player_add",
+
+    STATUS_SET_NEW_GAME: "status_set_new_game",
+    SET_STATUS: "set_status",
+
+    PLAY_NEXT: "play_next",
+
+    CARDS_SHOW: "cards_show",
     CARDS_DISTRIBUTE: "cards_distribute",
 
-    PLAYER_ADD: "player_add",
-    PLAYER_REMOVE: "player_remove",
-    PLAYER_WINS_CARDS: "player_wins_cards",
-    
-    DEALER_GET_CARD_BACK: "dealer_get_card_back",
+    DEALER_ADD_NEW: "dealer_add_new",
+    DEALER_GET_ALL: "dealer_get_all",
+    DEALERS_SET_ACTIVE: "dealers_set_to_play",
+
+    LOCATION_ADD_NEW: "location_add_new",
+    LOCATION_GET_ALL: "location_get_all",
+    LOCATIONS_SET_ACTIVE: "locations_set_to_play",
+
+    PLAYER_ADD_NEW: "player_add_new",
+    PLAYER_GET_ALL: "player_get_all",
+    PLAYERS_SET_ACTIVE: "players_set_to_play",
 }
+
+export default constants

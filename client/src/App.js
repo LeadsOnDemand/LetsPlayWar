@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import PlayComponent from './components/PlayComponent'
 
 class App extends Component {
   render() {
     return (
-      <h1 align="center">App!!!</h1>
+      <PlayComponent />
     );
   }
 }

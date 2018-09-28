@@ -1,5 +1,7 @@
 const db = require("../models");
 
+const players = require("./players.js");
+
 let initialData = () => {
     db.location.findAll()
         .then(data => {
@@ -11,7 +13,9 @@ let initialData = () => {
                             if (data.length == 0) {
                                 db.dealer.create({ name: "James Bond" }).then(dealer => {
                                     db.loc_dealer.create({locationId: locId, dealerId: dealer.id}).then(response => {
-                                        console.log("Ready to Go!")
+                                        // db.player.bulkCreate(players).then(response => {
+                                            console.log("Ready to Go!")
+                                        // }).catch(err => console.log("Player Create, err: " + err))                                        
                                     }).catch(err => console.log("Loc_dealer Create, err: " + err))
                                 }).catch(err => console.log("Dealer Create, err: " + err))
                             }

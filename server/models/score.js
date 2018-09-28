@@ -1,5 +1,5 @@
 module.exports = function (sequelize, Sequelize) {
-    const Author = sequelize.define("author", {
+    const Score = sequelize.define("score", {
         id: {
             type: Sequelize.UUID,
             defaultValue: Sequelize.UUIDV4,
@@ -16,5 +16,5 @@ module.exports = function (sequelize, Sequelize) {
         }
     });
 
-    return Author;
+    return Score;
 }
