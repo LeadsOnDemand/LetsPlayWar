@@ -14,7 +14,9 @@ const playerReducer = (state = initialStates, action) => {
         }
         case cst.PLAYER_ADD_NEW: {
             let players = [...state.all]
+            console.log("dealerReducer/PLAYER_ADD_NEW (before): " + JSON.stringify(players, null, 5))
             players.push(action.payload)
+            console.log("dealerReducer/PLAYER_ADD_NEW (after): " + JSON.stringify(players, null, 5))
             return Object.assign({}, state, {
                 all: [...players]
             })

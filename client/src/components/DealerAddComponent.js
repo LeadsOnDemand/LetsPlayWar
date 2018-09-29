@@ -17,30 +17,34 @@ const validate = values => {
 class DealerAddComponent extends React.Component {
 
     render() {
-        const { handleSubmit, invalid, submitting, reset, addNewLocation, dealers } = this.props
+        const { handleSubmit, invalid, submitting, reset, addNewDealer, dealers, addNewDone } = this.props
         return (
             <div className="panel panel-primary">
                 <div className="panel-heading"><h1 align="center">Add New Dealer</h1></div>
                 <div className="panel-body">
                     <div style={{ padding: '10px', border: '2px solid black', borderRadius: "10px", boxShadow: "1px 1px gray" }}>
-                        <form onSubmit={handleSubmit(addNewLocation)} autoComplete="off">
+                        <form onSubmit={handleSubmit(addNewDealer)} autoComplete="off">
                             <Field name="name" component={renderInputField} placeholder="Name" /><br />
-                            <p align="center"><button type="submit" className="btn" disabled={invalid || submitting}>Submit</button>&nbsp;&nbsp;&nbsp;
+                            <p align="center"><button type="submit" className="btn" disabled={invalid || submitting}>Submit</button>&nbsp;&nbsp;
+                        <button type="button" className="btn" disabled={submitting} onClick={addNewDone}>Done</button>&nbsp;&nbsp;&nbsp;&nbsp;
                         <button type="button" className="btn" disabled={submitting} onClick={reset}>Clear Values</button>
                             </p>
                         </form >
-                        <br/>
+                        <br />
                         {dealers.all.length > 0 &&
                             <div className="panel panel-info">
                                 <div className="panel-heading"><h2>Existing Location(s)</h2></div>
                                 <div className="panel-body">
-                                    <table align="center" border="1" style={{ padding: '20px' }}><tbody><tr>
-                                        {dealers.all.map((d, index) => {
-                                            <h3>Dealer #{index + 1}: {d.name}</h3>
-                                        })}
-                                    </tr></tbody></table>
+                                    <table align="center" border="1" style={{ padding: '20px' }}><tbody>
+                                        {dealers.all.map((d, index) => 
+                                            <tr key={index}><td>Dealer #{index + 1}: {d.name}</td></tr>
+                                        )}
+                                    </tbody></table>
                                 </div>
                             </div>
+                        }
+                        {dealers.all.length === 0 &&
+                            <h1>No Dealer 2 Display</h1>
                         }
                     </div>
                     <br />

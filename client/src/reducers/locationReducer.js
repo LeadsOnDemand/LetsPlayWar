@@ -14,7 +14,9 @@ const locationReducer = (state = initialStates, action) => {
         }
         case cst.LOCATION_ADD_NEW: {
             let locations = [...state.all]
+            console.log("dealerReducer/LOCATION_ADD_NEW (before): " + JSON.stringify(locations, null, 5))
             locations.push(action.payload)
+            console.log("dealerReducer/LOCATION_ADD_NEW (after): " + JSON.stringify(locations, null, 5))
             return Object.assign({}, state, {
                 all: [...locations]
             })

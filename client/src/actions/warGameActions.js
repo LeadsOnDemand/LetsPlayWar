@@ -13,26 +13,31 @@ const warGameActions = {
             //      * 1 location
             //      * 1 dealer
             //      * 1 player
-            if (locations.all.length === 0) {
+            if (locations.all.length === 0)
                 dispatch({
                     type: cst.SET_STATUS,
                     payload: cst.STATUS_LOCATION_ADD
                 })
-                if (dealers.all.length === 0) {
-                    dispatch({
-                        type: cst.SET_STATUS,
-                        payload: cst.STATUS_DEALER_ADD
-                    })
-                    if (players.all.length === 0)
-                        dispatch({
-                            type: cst.SET_STATUS,
-                            payload: cst.STATUS_PLAYER_ADD
-                        })
-                }
-            }
-            
-            //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+            else if (dealers.all.length === 0)
+                dispatch({
+                    type: cst.SET_STATUS,
+                    payload: cst.STATUS_DEALER_ADD
+                })
+            else if (players.all.length === 0)
+                dispatch({
+                    type: cst.SET_STATUS,
+                    payload: cst.STATUS_PLAYER_ADD
+                })
         }
+
+        // if we have condition below, then we could start to play:
+        //      * 1 location
+        //      * 1 dealer
+        //      * 1 to 4 players
+        // if (locations.all.length && dealers.all.length && players.all.length) {
+
+        // }
+        //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
     },
 
     setNewStatus: (newStatus) => {
@@ -78,6 +83,15 @@ const warGameActions = {
         }
     },
 
+    addNewDone: () => {
+        return dispatch => {
+            dispatch({
+                type: cst.SET_STATUS,
+                payload: cst.STATUS_SET_READY
+            })
+        }
+    },
+
     addNewDealer: (values) => {
         return dispatch => {
             axios.post("http://localhost:3090/api/add/dealer/", { name: values.name })
@@ -92,7 +106,7 @@ const warGameActions = {
 
     addNewLocation: (values) => {
         return dispatch => {
-            axios.post("http://localhost:3090/api/add/location/", { name: values.name })
+            axios.post("http://localhost:3090/api/add/location/", { name: values.name, address: values.address })
                 .then(response => {
                     dispatch({
                         type: cst.LOCATION_ADD_NEW,

@@ -4,6 +4,8 @@ import actions from '../actions/warGameActions'
 import cst from '../constants/cst'
 
 import PlayersSelected2PlayComponent from '../components/PlayersSelected2PlayComponent'
+import DealerAddComponent from '../components/DealerAddComponent'
+import LocationAddComponent from '../components/LocationAddComponent'
 import PlayerAddComponent from '../components/PlayerAddComponent'
 
 class PlayComponent extends React.Component {
@@ -13,10 +15,20 @@ class PlayComponent extends React.Component {
     }
 
     render() {
-        const { data } = this.props
+        const { data, playGame } = this.props
         return (
             <div style={{ padding: '0px 10px' }}>
-                {data.status === cst.STATUS_PLAY &&
+                <p align='center'><button type="button" onClick={playGame}>Play</button></p>
+                {data.status === cst.STATUS_LOCATION_ADD &&
+                    <LocationAddComponent />
+                }
+                {data.status === cst.STATUS_DEALER_ADD &&
+                    <DealerAddComponent />
+                }
+                {data.status === cst.STATUS_PLAYER_ADD &&
+                    <PlayerAddComponent />
+                }
+                {/* {data.status === cst.STATUS_PLAY &&
                     <div>
 
                     </div>
@@ -40,7 +52,7 @@ class PlayComponent extends React.Component {
                     <div>
 
                     </div>
-                }
+                } */}
             </div>
         )
     }

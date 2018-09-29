@@ -17,7 +17,7 @@ const validate = values => {
 class PlayerAddComponent extends React.Component {
 
     render() {
-        const { handleSubmit, invalid, submitting, reset, addNewPlayer, players } = this.props
+        const { handleSubmit, invalid, submitting, reset, addNewPlayer, players, addNewDone } = this.props
         return (
             <div className="panel panel-primary">
                 <div className="panel-heading"><h1 align="center">Add New Player</h1></div>
@@ -26,6 +26,7 @@ class PlayerAddComponent extends React.Component {
                         <form onSubmit={handleSubmit(addNewPlayer)} autoComplete="off">
                             <Field name="name" component={renderInputField} placeholder="Name" /><br />
                             <p align="center"><button type="submit" className="btn" disabled={invalid || submitting}>Submit</button>&nbsp;&nbsp;&nbsp;
+                        <button type="button" className="btn" disabled={submitting} onClick={addNewDone}>Done</button>&nbsp;&nbsp;&nbsp;&nbsp;
                         <button type="button" className="btn" disabled={submitting} onClick={reset}>Clear Values</button>
                             </p>
                         </form >
@@ -34,13 +35,16 @@ class PlayerAddComponent extends React.Component {
                             <div className="panel panel-info">
                                 <div className="panel-heading"><h2>Existing Player(s)</h2></div>
                                 <div className="panel-body">
-                                    <table align="center" border="1" style={{ padding: '20px' }}><tbody><tr>
-                                        {players.all.map((p, index) => {
-                                            <h3>Player #{index + 1}: {p.name}</h3>
-                                        })}
-                                    </tr></tbody></table>
+                                    <table align="center" border="1" style={{ padding: '20px' }}><tbody>
+                                        {players.all.map((p, index) => 
+                                            <tr key={index}><td>Player #{index + 1}: {p.name}</td></tr>
+                                        )}
+                                    </tbody></table>
                                 </div>
                             </div>
+                        }
+                        {players.all.length === 0 &&
+                            <h1>No Player 2 Display</h1>
                         }
                     </div>
                     <br />

@@ -11,21 +11,27 @@ const validate = values => {
     if (!values.name) {
         errors.name = "Required"
     }
+
+    if (!values.address) {
+        errors.address = "Required"
+    }
     return errors
 }
 
 class LocationAddComponent extends React.Component {
 
     render() {
-        const { handleSubmit, invalid, submitting, reset, addNewLocation, locations } = this.props
+        const { handleSubmit, invalid, submitting, reset, addNewLocation, locations, addNewDone } = this.props
         return (
             <div className="panel panel-primary">
                 <div className="panel-heading"><h1 align="center">Add New Location</h1></div>
                 <div className="panel-body">
                     <div style={{ padding: '10px', border: '2px solid black', borderRadius: "10px", boxShadow: "1px 1px gray" }}>
                         <form onSubmit={handleSubmit(addNewLocation)} autoComplete="off">
-                            <Field name="name" component={renderInputField} placeholder="name" /><br />
+                            <Field name="name" component={renderInputField} placeholder="Name" /><br />
+                            <Field name="address" component={renderInputField} placeholder="Address" /><br />
                             <p align="center"><button type="submit" className="btn" disabled={invalid || submitting}>Submit</button>&nbsp;&nbsp;&nbsp;
+                        <button type="button" className="btn" disabled={submitting} onClick={addNewDone}>Done</button>&nbsp;&nbsp;&nbsp;&nbsp;
                         <button type="button" className="btn" disabled={submitting} onClick={reset}>Clear Values</button>
                             </p>
                         </form >
@@ -34,13 +40,16 @@ class LocationAddComponent extends React.Component {
                             <div className="panel panel-info">
                                 <div className="panel-heading"><h2>Existing Location(s)</h2></div>
                                 <div className="panel-body">
-                                    <table align="center" border="1" style={{ padding: '20px' }}><tbody><tr>
-                                        {locations.all.map((l, index) => {
-                                            <h3>Location #{index + 1}: {l.name}</h3>
-                                        })}
-                                    </tr></tbody></table>
+                                    <table align="center" border="1" style={{ padding: '20px' }}><tbody>
+                                        {locations.all.map((l, index) => 
+                                            <tr key={index}><td>Location #{index + 1}: {l.name}</td></tr>
+                                        )}
+                                    </tbody></table>
                                 </div>
                             </div>
+                        }
+                        {locations.all.length === 0 &&
+                            <h1>No Location 2 Display</h1>
                         }
                     </div>
                     <br />
