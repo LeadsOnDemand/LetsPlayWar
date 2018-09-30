@@ -15,7 +15,7 @@
 > * **Player**: player's information
 > * **score**: record of result for all players
 
-## How to Play? (NOT DONE YET, FRONT-END NEEDS TO BE DONE)
+## How to Play?
 ![alt text](assets/play.jpg)
 
 > The dealer gives a card for each player and against each player, he (she) has his (her) own card. Result:
