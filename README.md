@@ -1,4 +1,4 @@
-# Let's Play War
+# Let's Play War (ATTENTION: WE COULD NOT PLAY YET!!!)
 
 ## Technologies (3-tier architecture)
 > * **Front-end**: **React-Redux** (built with: "**create-react-app**"),
