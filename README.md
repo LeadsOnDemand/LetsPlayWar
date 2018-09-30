@@ -31,8 +31,11 @@
 > * Create a file "**server/config.js**" containing the password for the database with only a line: \
 >                      ***module.exports = { db_pwd: <THE_PASSWORD_TO_YOUR_DATABASE> };***
 
-### Server
-> In a terminal: "**npm run build**"
+### Back-End
+> In a terminal: "**npm run build**" (need to run "**npm install**" to install dependencies first)
+
+### Front-End:
+> In a terminal: "**npm run start**" (need to run "**npm install**" to install dependencies first)
 
 ## Some User's Interface 
 ### Setup
