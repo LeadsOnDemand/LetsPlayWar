@@ -42,7 +42,7 @@
 We need to setup everything before to start the game:
 > * A **location** (with a **name** and an **address**)
 > * A **dealer** (with his/her **name**)
-> * At least on **player**
+> * At least one **player**
 
 We could add any information here: 
 ![alt text](assets/setup2play.jpg)
