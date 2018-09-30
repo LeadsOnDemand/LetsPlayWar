@@ -23,12 +23,9 @@ const initialStates = {
         { id: 52, type: cst.DIAMS, val: 13 },
     ],
     round: 0,
-    locationId: "",
-    dealerId: "",
-    players: [], // { id: playerId, cardsWin: [], dealerCard: {}, playerCard: {}}
-    winnerId: "",
+    playingCards: [], // { id: playerId, cardsWin: [], dealerCard: {}, playerCard: {}}
     isCardShow: false,
-    status: cst.STATUS_SET_READY,
+    status: cst.STATUS_SET_NEW_GAME,
 }
 
 const warReducer = (state = initialStates, action) => {
@@ -50,7 +47,7 @@ const warReducer = (state = initialStates, action) => {
         }
         case cst.STATUS_SET_NEW_GAME: {
             return Object.assign({}, state, {
-                status: action.payload
+                status: action.type
             })
         }
         case cst.SET_STATUS: {

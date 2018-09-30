@@ -3,10 +3,12 @@ import { connect } from 'react-redux'
 import actions from '../actions/warGameActions'
 import cst from '../constants/cst'
 
-import PlayersSelected2PlayComponent from '../components/PlayersSelected2PlayComponent'
+import Setting4GameComponent from './Setting4GameComponent'
 import DealerAddComponent from '../components/DealerAddComponent'
 import LocationAddComponent from '../components/LocationAddComponent'
 import PlayerAddComponent from '../components/PlayerAddComponent'
+
+import('../index.css');
 
 class PlayComponent extends React.Component {
     constructor(props) {
@@ -18,7 +20,7 @@ class PlayComponent extends React.Component {
         const { data, playGame } = this.props
         return (
             <div style={{ padding: '0px 10px' }}>
-                <p align='center'><button type="button" onClick={playGame}>Play</button></p>
+                <div className="divHeader">Let's Play War</div>
                 {data.status === cst.STATUS_LOCATION_ADD &&
                     <LocationAddComponent />
                 }
@@ -27,6 +29,9 @@ class PlayComponent extends React.Component {
                 }
                 {data.status === cst.STATUS_PLAYER_ADD &&
                     <PlayerAddComponent />
+                }
+                {data.status === cst.STATUS_SET_NEW_GAME &&
+                    <Setting4GameComponent />
                 }
                 {/* {data.status === cst.STATUS_PLAY &&
                     <div>

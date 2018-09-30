@@ -33,6 +33,19 @@
 
 ### Server
 > In a terminal: "**npm run build**"
+
+## Some User's Interface 
+### Setup
+We need to setup everything before to start the game:
+> * A **location** (with a **name** and an **address**)
+> * A **dealer** (with his/her **name**)
+> * At least on **player**
+
+We could add any information here: 
+![alt text](assets/setup2play.jpg)
+
+### For Example: Adding new Players
+![alt text](assets/addPlayers.jpg)
 ---
 
 # Let's Play War (requirements)

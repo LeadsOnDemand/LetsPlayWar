@@ -15,6 +15,10 @@ const validate = values => {
 }
 
 class PlayerAddComponent extends React.Component {
+    constructor(props){
+        super(props)
+        this.props.getPlayers()
+    }
 
     render() {
         const { handleSubmit, invalid, submitting, reset, addNewPlayer, players, addNewDone } = this.props
@@ -33,18 +37,15 @@ class PlayerAddComponent extends React.Component {
                         <br/>
                         {players.all.length > 0 &&
                             <div className="panel panel-info">
-                                <div className="panel-heading"><h2>Existing Player(s)</h2></div>
+                                <div className="panel-heading"><h2 align="center">Existing Player(s)</h2></div>
                                 <div className="panel-body">
                                     <table align="center" border="1" style={{ padding: '20px' }}><tbody>
                                         {players.all.map((p, index) => 
-                                            <tr key={index}><td>Player #{index + 1}: {p.name}</td></tr>
+                                            <tr key={index}><td className="tdInfo">Player #{index + 1}: {p.name}</td></tr>
                                         )}
                                     </tbody></table>
                                 </div>
                             </div>
-                        }
-                        {players.all.length === 0 &&
-                            <h1>No Player 2 Display</h1>
                         }
                     </div>
                     <br />

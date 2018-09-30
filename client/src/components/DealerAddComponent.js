@@ -15,6 +15,10 @@ const validate = values => {
 }
 
 class DealerAddComponent extends React.Component {
+    constructor(props){
+        super(props)
+        this.props.getDealers()
+    }
 
     render() {
         const { handleSubmit, invalid, submitting, reset, addNewDealer, dealers, addNewDone } = this.props
@@ -33,18 +37,15 @@ class DealerAddComponent extends React.Component {
                         <br />
                         {dealers.all.length > 0 &&
                             <div className="panel panel-info">
-                                <div className="panel-heading"><h2>Existing Location(s)</h2></div>
+                                <div className="panel-heading"><h2 align="center">Existing Location(s)</h2></div>
                                 <div className="panel-body">
                                     <table align="center" border="1" style={{ padding: '20px' }}><tbody>
                                         {dealers.all.map((d, index) => 
-                                            <tr key={index}><td>Dealer #{index + 1}: {d.name}</td></tr>
+                                            <tr key={index}><td className="tdInfo">Dealer #{index + 1}: {d.name}</td></tr>
                                         )}
                                     </tbody></table>
                                 </div>
                             </div>
-                        }
-                        {dealers.all.length === 0 &&
-                            <h1>No Dealer 2 Display</h1>
                         }
                     </div>
                     <br />

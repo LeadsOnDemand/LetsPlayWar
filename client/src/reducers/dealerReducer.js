@@ -14,9 +14,7 @@ const dealerReducer = (state = initialStates, action) => {
         }
         case cst.DEALER_ADD_NEW: {
             let dealers = [...state.all]
-            console.log("dealerReducer/DEALER_ADD_NEW (before): " + JSON.stringify(dealers, null, 5))
             dealers.push(action.payload)
-            console.log("dealerReducer/DEALER_ADD_NEW (after): " + JSON.stringify(dealers, null, 5))
             return Object.assign({}, state, {
                 all: [...dealers]
             })

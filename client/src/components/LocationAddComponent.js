@@ -19,6 +19,10 @@ const validate = values => {
 }
 
 class LocationAddComponent extends React.Component {
+    constructor(props){
+        super(props)
+        this.props.getLocations()
+    }
 
     render() {
         const { handleSubmit, invalid, submitting, reset, addNewLocation, locations, addNewDone } = this.props
@@ -38,18 +42,15 @@ class LocationAddComponent extends React.Component {
                         <br/>
                         {locations.all.length > 0 &&
                             <div className="panel panel-info">
-                                <div className="panel-heading"><h2>Existing Location(s)</h2></div>
+                                <div className="panel-heading"><h2 align="center">Existing Location(s)</h2></div>
                                 <div className="panel-body">
                                     <table align="center" border="1" style={{ padding: '20px' }}><tbody>
                                         {locations.all.map((l, index) => 
-                                            <tr key={index}><td>Location #{index + 1}: {l.name}</td></tr>
+                                            <tr key={index}><td className="tdInfo">Location #{index + 1}: {l.name}</td></tr>
                                         )}
                                     </tbody></table>
                                 </div>
                             </div>
-                        }
-                        {locations.all.length === 0 &&
-                            <h1>No Location 2 Display</h1>
                         }
                     </div>
                     <br />
