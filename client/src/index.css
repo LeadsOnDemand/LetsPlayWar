@@ -4,16 +4,16 @@ body {
   font-family: sans-serif;
 }
 
-.mainPanel{
+.mainPanel {
   width: 80%;
 }
 
-.spanAdd:hover{
-  color:orange;
+.spanAdd:hover {
+  color: orange;
   cursor: pointer;
 }
 
-.spanAdd{
+.spanAdd {
   background-color: black;
   padding: 0px 5px;
   border: 1px solid black;
@@ -22,9 +22,9 @@ body {
   color: cyan;
 }
 
-.divHeader{
-  background-color:black;
-  color:cyan;
+.divHeader {
+  background-color: black;
+  color: cyan;
   font-size: 3em;
   font-weight: bold;
   border-radius: 40px;
@@ -34,9 +34,44 @@ body {
   margin: 20px;
 }
 
-.tdInfo{
+.tdInfo {
   padding: 5px 15px;
   font-size: 1.5em;
   font-weight: bold;
   background-color: #b7d1f1
+}
+
+.cardFrame {
+  border: 3px solid black;
+  border-radius: 5px;
+}
+
+.cardInner {
+  width: 60%;
+  height: 85%;
+  font-size: 2em;
+  vertical-align: middle;
+  left: 5%;
+  top: 5%;
+  border: 5px solid #12387f;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+td{
+  border: 1px solid black;
+}
+
+.btn:hover{
+  color:yellow;
+  cursor: pointer;
+}
+
+.btn{
+  background-color: black;
+  color: white;
+  font-size: 2em;
+  padding: 2px 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px gray;
 }

@@ -1,4 +1,4 @@
-# Let's Play War (ATTENTION: WE COULD NOT PLAY YET!!!)
+# Let's Play War (ATTENTION: WE COULD NOT PLAY MORE THAN ONE ROUND...)
 
 ## Technologies (3-tier architecture)
 > * **Front-end**: **React-Redux** (built with: "**create-react-app**"),
@@ -16,7 +16,6 @@
 > * **score**: record of result for all players
 
 ## How to Play?
-![alt text](assets/play.jpg)
 
 > The dealer gives a card for each player and against each player, he (she) has his (her) own card. Result:
 > * If the card of the player is better, he (she) takes his card and the one of the dealer,
@@ -44,11 +43,19 @@ We need to setup everything before to start the game:
 > * A **dealer** (with his/her **name**)
 > * At least one **player**
 
-We could add any information here: 
-![alt text](assets/setup2play.jpg)
-
 ### For Example: Adding new Players
 ![alt text](assets/addPlayers.jpg)
+
+### Get Ready: 
+![alt text](assets/setup2play.jpg)
+
+### Cards Down
+ 
+![alt text](assets/hide.jpg)
+
+## Cards Up
+![alt text](assets/show.jpg)
+
 ---
 
 # Let's Play War (requirements)

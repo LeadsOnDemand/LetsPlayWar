@@ -1,5 +1,5 @@
 import React from 'react'
-import { reduxForm, Field, FieldArray, reset } from 'redux-form'
+import { reduxForm, Field, reset } from 'redux-form'
 import { renderInputField } from '../common/reduxForm/renderField'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -28,7 +28,7 @@ class LocationAddComponent extends React.Component {
         const { handleSubmit, invalid, submitting, reset, addNewLocation, locations, addNewDone } = this.props
         return (
             <div className="panel panel-primary">
-                <div className="panel-heading"><h1 align="center">Add New Location</h1></div>
+                <div className="panel-heading"><h3 align="center">Add New Location</h3></div>
                 <div className="panel-body">
                     <div style={{ padding: '10px', border: '2px solid black', borderRadius: "10px", boxShadow: "1px 1px gray" }}>
                         <form onSubmit={handleSubmit(addNewLocation)} autoComplete="off">

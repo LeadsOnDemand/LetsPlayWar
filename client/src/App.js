@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import PlayComponent from './components/PlayComponent'
+import MainUIComponent from './components/MainUIComponent'
 
 class App extends Component {
   render() {
     return (
-      <PlayComponent />
+      <MainUIComponent />
     );
   }
 }

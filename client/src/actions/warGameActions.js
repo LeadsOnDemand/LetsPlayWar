@@ -17,48 +17,148 @@ const warGameActions = {
                 dispatch({
                     type: cst.STATUS_SET_NEW_GAME
                 })
-            // let dealers = getState().dealers
-            // let locations = getState().locations
-            // let players = getState().players
+            else {
+                if (war.status === cst.PLAY_CARDS_DISTRIBUTE) {
+                    for (let i = 0; i < war.playingCards.length; i++) {
+                        let obj = war.playingCards[i]
+                        if (obj.dealerCard.val === obj.playerCard.val)
+                            dispatch({
+                                type: cst.PLAY_RESULT_TIE,
+                                payload: obj.id,
+                            })
+                        else if (obj.dealerCard.val < obj.playerCard.val)
+                            dispatch({
+                                type: cst.PLAY_RESULT_PLAYER_WON,
+                                payload: obj.id,
+                            })
+                        else if (obj.dealerCard.val > obj.playerCard.val)
+                            dispatch({
+                                type: cst.PLAY_RESULT_PLAYER_LOSE,
+                                payload: obj.id,
+                            })
+                    }
+                    dispatch({
+                        type: cst.SET_STATUS,
+                        payload: cst.PLAY_CARDS_SHOW,
+                    })
+                }
+                // else if (war.status === cst.PLAY_CARDS_SHOW){
+                //     dispatch({
+                //         type: cst.PLAY_CARDS_DISTRIBUTE
+                //     })
+                // }
+            }
+        }
+    },
 
-            // // We need at least to start a game:
-            // //      * 1 location
-            // //      * 1 dealer
-            // //      * 1 player
-            // if (locations.all.length === 0)
-            //     dispatch({
-            //         type: cst.SET_STATUS,
-            //         payload: cst.STATUS_LOCATION_ADD
-            //     })
-            // else if (dealers.all.length === 0)
-            //     dispatch({
-            //         type: cst.SET_STATUS,
-            //         payload: cst.STATUS_DEALER_ADD
-            //     })
-            // else if (players.all.length === 0)
-            //     dispatch({
-            //         type: cst.SET_STATUS,
-            //         payload: cst.STATUS_PLAYER_ADD
-            //     })
+    setResetConfig: () => {
+        return dispatch => {
+            dispatch({
+                type: cst.DEALER_RESET_ACTIVE,
+            })
 
-            // // if we have condition below, then we could start to play:
-            // //      * 1 location
-            // //      * 1 dealer
-            // //      * 1 to 4 players
-            // if (locations.all.length > 0 && dealers.all.length > 0 && players.all.length > 0) {
-            //     if (war.playingCards.length === 0)
-            //         dispatch({
-            //             type: cst.STATUS_SET_NEW_GAME
-            //         })
-            // }
+            dispatch({
+                type: cst.LOCATION_RESET_ACTIVE,
+            })
 
+            dispatch({
+                type: cst.PLAYER_RESET_ACTIVE,
+            })
+
+            dispatch({
+                type: cst.SET_STATUS,
+                payload: cst.STATUS_SET_NEW_CONFIG,
+            })
         }
     },
 
     setReady2Play: (values) => {
-        return dispatch => {
-            //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-            console.log("warGameActions/setReady2Play/values: " + JSON.stringify(values, null, 5))
+        return (dispatch, getState) => {
+            dispatch({
+                type: cst.LOCATION_SET_ACTIVE,
+                payload: values.location
+            })
+
+            dispatch({
+                type: cst.DEALER_SET_ACTIVE,
+                payload: values.dealer
+            })
+
+            let playingCards = []
+            //first player is always existed (validation of the formular)
+            dispatch({
+                type: cst.PLAYER_SET_ACTIVE,
+                payload: values.player1
+            })
+
+            const players = getState().players.all
+            let pl = players.filter(p => p.id === values.player1 ? p : null)
+            playingCards.push({
+                id: values.player1,
+                name: pl[0].name,
+                cardsWon: [],
+                dealerCard: {},
+                playerCard: {}
+            })
+
+            if (values.player2 !== undefined) {
+                dispatch({
+                    type: cst.PLAYER_SET_ACTIVE,
+                    payload: values.player2
+                })
+                pl = players.filter(p => p.id === values.player2 ? p : null)
+                playingCards.push({
+                    id: values.player2,
+                    name: pl[0].name,
+                    cardsWon: [],
+                    dealerCard: {},
+                    playerCard: {}
+                })
+            }
+
+            if (values.player3 !== undefined) {
+                dispatch({
+                    type: cst.PLAYER_SET_ACTIVE,
+                    payload: values.player3
+                })
+                pl = players.filter(p => p.id === values.player3 ? p : null)
+                playingCards.push({
+                    id: values.player3,
+                    name: pl[0].name,
+                    cardsWon: [],
+                    dealerCard: {},
+                    playerCard: {}
+                })
+            }
+
+            if (values.player4 !== undefined) {
+                dispatch({
+                    type: cst.PLAYER_SET_ACTIVE,
+                    payload: values.player4
+                })
+                pl = players.filter(p => p.id === values.player4 ? p : null)
+                playingCards.push({
+                    id: values.player4,
+                    name: pl[0].name,
+                    cardsWon: [],
+                    dealerCard: {},
+                    playerCard: {}
+                })
+            }
+
+            dispatch({
+                type: cst.STATUS_SELECT_PLAYERS,
+                payload: playingCards
+            })
+
+            dispatch({
+                type: cst.PLAY_CARDS_DISTRIBUTE
+            })
+
+            dispatch({ // We could start to play
+                type: cst.SET_STATUS,
+                payload: cst.PLAY_CARDS_DISTRIBUTE
+            })
         }
     },
 
@@ -68,8 +168,6 @@ const warGameActions = {
             if (dealers.all.length === 0)
                 axios.get("http://localhost:3090/api/get/dealers/")
                     .then(response => {
-                        //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-                        console.log("warGAmeActions/getDealers/response: " + JSON.stringify(response, null, 5))
                         dispatch({
                             type: cst.DEALER_GET_ALL,
                             payload: response.data
@@ -84,8 +182,6 @@ const warGameActions = {
             if (locations.all.length === 0)
                 axios.get("http://localhost:3090/api/get/locations/")
                     .then(response => {
-                        //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-                        console.log("warGAmeActions/getLocation/response: " + JSON.stringify(response, null, 5))
                         dispatch({
                             type: cst.LOCATION_GET_ALL,
                             payload: response.data
@@ -100,8 +196,6 @@ const warGameActions = {
             if (players.all.length === 0)
                 axios.get("http://localhost:3090/api/get/players/")
                     .then(response => {
-                        //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-                        console.log("warGAmeActions/getPlayers/response: " + JSON.stringify(response, null, 5))
                         dispatch({
                             type: cst.PLAYER_GET_ALL,
                             payload: response.data

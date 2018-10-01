@@ -25,6 +25,11 @@ const locationReducer = (state = initialStates, action) => {
                 active: [...newL]
             })
         }
+        case cst.LOCATION_RESET_ACTIVE: {
+            return Object.assign({}, state, {
+                active: []
+            })
+        }
         default:
             return state;
     }

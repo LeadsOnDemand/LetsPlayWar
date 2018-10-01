@@ -23,31 +23,90 @@ const initialStates = {
         { id: 52, type: cst.DIAMS, val: 13 },
     ],
     round: 0,
-    playingCards: [], // { id: playerId, cardsWin: [], dealerCard: {}, playerCard: {}}
-    isCardShow: false,
+    playingCards: [], // { id: playerId, name: "", cardsWon: [], dealerCard: {}, playerCard: {}}
     status: cst.STATUS_SET_NEW_GAME,
 }
 
 const warReducer = (state = initialStates, action) => {
     switch (action.type) {
-        case cst.STATUS_PLAY: {
+        case cst.PLAY_CARDS_DISTRIBUTE: {
+            let cards = [...state.dealerCards]
+            let playing = [...state.playingCards]
+            for (let i = 0; i < playing.length; i++) {
+                let index = Math.floor(Math.random() * cards.length)
+                // Get (physically) a card for the dealer
+                playing[i].dealerCard = cards.splice(index, 1)[0]
+                index = Math.floor(Math.random() * cards.length)
+                // Get (physically) a card for the player
+                playing[i].playerCard = cards.splice(index, 1)[0]
+            }
+            return Object.assign({}, state, {
+                round: state.round + 1,
+                dealerCard: [...cards],
+                playingCards: [...playing]
+            })
+        }
+        case cst.PLAY_CARDS_SHOW: {
             return Object.assign({}, state, {
                 status: action.payload
             })
         }
-        case cst.STATUS_FINISH: {
+        case cst.PLAY_RESULT_PLAYER_WON: {
+            let allCards = [...state.dealerCards]
+            let playing = [...state.playingCards]
+            let thePlayer = playing.filter(p => p.id === action.payload ? p : null)
+            thePlayer[0].cardsWon.push(thePlayer[0].playerCard)
+            thePlayer[0].cardsWon.push(thePlayer[0].dealerCard)
+            return Object.assign({}, state, {
+                dealerCards: [...allCards],
+                playingCards: state.playingCards.map(p => p.id === action.payload ? {...thePlayer[0]} : p),
+                status: state.dealerCards.length >= (state.playingCards * 2) ? cst.PLAY_CARDS_DISTRIBUTE : cst.PLAY_END
+            })
+        }
+        case cst.PLAY_RESULT_PLAYER_LOSE: {
+            let allCards = [...state.dealerCards]
+            let playing = [...state.playingCards]
+            let thePlayer = playing.filter(p => p.id === action.payload ? p : null)
+            allCards.push(thePlayer[0].playerCard)
+            allCards.push(thePlayer[0].dealerCard)
+            return Object.assign({}, state, {
+                dealerCards: [...allCards],
+                playingCards: state.playingCards.map(p => p.id === action.payload ? {...thePlayer[0]} : p),
+                status: cst.PLAY_CARDS_DISTRIBUTE
+            })
+        }
+        case cst.PLAY_RESULT_TIE: {
+            let allCards = [...state.dealerCards]
+            let playing = [...state.playingCards]
+            let thePlayer = playing.filter(p => p.id === action.payload ? p : null)
+            thePlayer[0].cardsWon.push(thePlayer[0].playerCard)
+            allCards.push(thePlayer[0].dealerCard)
+            return Object.assign({}, state, {
+                dealerCards: [...allCards],
+                playingCards: state.playingCards.map(p => p.id === action.payload ? {...thePlayer[0]} : p),
+                status: state.dealerCards.length >= (state.playingCards * 2) ? cst.PLAY_CARDS_DISTRIBUTE : cst.PLAY_END
+            })
+        }
+        case cst.PLAY_END: {
             return Object.assign({}, state, {
                 status: action.payload
             })
         }
-        case cst.STATUS_SELECT_PLAYERS: {
+        case cst.STATUS_SELECT_PLAYERS: { // no displaying status
             return Object.assign({}, state, {
-                status: action.payload
+                playingCards: action.payload
             })
         }
         case cst.STATUS_SET_NEW_GAME: {
             return Object.assign({}, state, {
                 status: action.type
+            })
+        }
+        case cst.STATUS_SET_NEW_CONFIG: {
+            return Object.assign({}, state, {
+                round: 0,
+                playingCards: [], // { id: playerId, name: "", cardsWon: [], dealerCard: {}, playerCard: {}}
+                status: cst.STATUS_SET_NEW_GAME,
             })
         }
         case cst.SET_STATUS: {

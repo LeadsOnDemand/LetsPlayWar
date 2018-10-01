@@ -25,6 +25,11 @@ const dealerReducer = (state = initialStates, action) => {
                 active: [...newD]
             })
         }
+        case cst.DEALER_RESET_ACTIVE: {
+            return Object.assign({}, state, {
+                active: []
+            })
+        }
         default:
             return state;
     }

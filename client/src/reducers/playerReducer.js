@@ -27,6 +27,11 @@ const playerReducer = (state = initialStates, action) => {
                 actives: [...actPlayer]
             })
         }
+        case cst.PLAYER_RESET_ACTIVE: {
+            return Object.assign({}, state, {
+                active: []
+            })
+        }
         default:
             return state;
     }

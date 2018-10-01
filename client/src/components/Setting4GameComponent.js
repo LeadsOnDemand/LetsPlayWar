@@ -55,7 +55,7 @@ class Setting4GameComponent extends React.Component {
                 <div style={{ padding: '10px', border: '2px solid black', borderRadius: "15px", boxShadow: "1px 1px gray" }}>
                     <form onSubmit={handleSubmit(setReady2Play)} autoComplete="off">
                         <Field name="location" component={renderSelectField} placeholder="Location" className="form-control">
-                            <option key={0} value="">-- Select a Location --</option>
+                            <option key={0} value="">[Select a Location]</option>
                             {locations.all.map(l =>
                                 <option key={l.id} value={l.id}>{l.name} ({l.address})</option>
                             )}
@@ -63,36 +63,39 @@ class Setting4GameComponent extends React.Component {
                         <span className="spanAdd" onClick={e => setStatus(cst.STATUS_LOCATION_ADD)}>Add More Location</span><br /><br />
 
                         <Field name="dealer" component={renderSelectField} placeholder="Dealer" className="form-control">
-                            <option key={0} value="">-- Select a Dealer --</option>
+                            <option key={0} value="">[Select a Dealer]</option>
                             {dealers.all.map(d =>
                                 <option key={d.id} value={d.id}>{d.name}</option>
                             )}
                         </Field>
                         <span className="spanAdd" type="button" onClick={e => setStatus(cst.STATUS_DEALER_ADD)}>Add More Dealer</span><br /><br />
 
-                        <Field name="player1" component={renderSelectField} placeholder="First Player" className="form-control">
-                            <option key={0} value="">-- Select at Least a Player --</option>
+                        <Field name="player1" component={renderSelectField} placeholder="Player #1" className="form-control">
+                            <option key={0} value="">[Select at Least a Player]</option>
                             {players.all.map(p =>
                                 <option key={p.id} value={p.id}>{p.name}</option>
                             )}
                         </Field>
                         {p1 !== undefined && p1.length > 0 && players.all.length > 1 &&
                             <div>
-                                <Field name="player2" component={renderSelectField} placeholder="Second Player" className="form-control">
-                                    <option key={0} value="">-- Select the Second Player --</option>
+                                <br/>
+                                <Field name="player2" component={renderSelectField} placeholder="Player #2 (Optional)" className="form-control">
+                                    <option key={0} value="">[Select the Second Player]</option>
                                     {players.all.map(p => p.id !== p1 ? <option key={p.id} value={p.id}>{p.name}</option> : null)}
                                 </Field>
                                 {p2 !== undefined && p2.length > 0 && players.all.length > 2 &&
                                     <div>
-                                        <Field name="player3" component={renderSelectField} placeholder="Third Player" className="form-control">
-                                            <option key={0} value="">-- Select the Third Player --</option>
+                                    <br/>
+                                        <Field name="player3" component={renderSelectField} placeholder="Player #3 (Optional)" className="form-control">
+                                            <option key={0} value="">[Select the Third Player]</option>
                                             {players.all.map(p => p.id !== p1 && p.id !== p2 ? <option key={p.id} value={p.id}>{p.name}</option> : null)}
                                         </Field>
 
                                         {p3 !== undefined && p3.length > 0 && players.all.length > 3 &&
                                             <div>
-                                                <Field name="player4" component={renderSelectField} placeholder="Last Player" className="form-control">
-                                                    <option key={0} value="">-- Select the Last Player --</option>
+                                            <br/>
+                                                <Field name="player4" component={renderSelectField} placeholder="Player #4 (Optional)" className="form-control">
+                                                    <option key={0} value="">[Select the Last Player]</option>
                                                     {players.all.map(p => (p.id !== p1) && (p.id !== p2) && (p.id !== p3) ? <option key={p.id} value={p.id}>{p.name}</option> : null)}
                                                 </Field>
                                             </div>
@@ -112,19 +115,9 @@ class Setting4GameComponent extends React.Component {
     }
 }
 
-const getDealers = (state) => {
-    console.log("Setting4GameComponent/getDealer: " + JSON.stringify(state.dealers))
-    return state.dealers
-}
-
-const getLocations = (state) => {
-    console.log("Setting4GameComponent/getLocation: " + JSON.stringify(state.locations))
-    return state.locations
-}
-
 const mapStateToProps = (state) => ({
-    dealers: getDealers(state),//state.dealers,
-    locations: getLocations(state),//state.locations,
+    dealers: state.dealers,
+    locations: state.locations,
     players: state.players,
 })
 
