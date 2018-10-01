@@ -53,9 +53,10 @@ We need to setup everything before to start the game:
  
 ![alt text](assets/hide.jpg)
 
-## Cards Up
+### Cards Up
 ![alt text](assets/show.jpg)
 
+> **Note**: "1" is the smallest value in this App, which is not true in reality. But, the main purpose of the exercise is to build a **3-tier Architecture**. With a very easy step, we could fix this problem, but it's not the priority right now! 
 ---
 
 # Let's Play War (requirements)
