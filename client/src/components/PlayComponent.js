@@ -11,7 +11,7 @@ class PlayComponent extends React.Component {
             <div>
                 {obj === undefined &&
                     <div className="cardFrame">
-                        <div className="cardInner" style={{backgroundColor:'black'}}>
+                        <div className="cardInner" style={{ backgroundColor: 'black' }}>
                             <p align="center">&nbsp;</p>
                             <p align="center">&nbsp;</p>
                         </div>
@@ -189,18 +189,74 @@ class PlayComponent extends React.Component {
                             {/* ===================== Player Names ===================== */}
                             <tr style={{ width: "100%", border: "2px solid black", backgroundColor: "#9cbcfc" }}>
                                 <td align="center" style={{ width: "23%" }}>
-                                    {war.playingCards.length > 0 && <h3><font color="blue"><b>{war.playingCards[0].name}</b></font></h3>}
+                                    {war.playingCards.length > 0 &&
+                                        <div>
+                                            {war.status === cst.PLAY_END &&
+                                                <div>
+                                                    {war.playingCards[0].cardsWon.length === war.maxScore &&
+                                                        <h3><font color="#00FF00"><b>{war.playingCards[0].name} (<font color="red">winner</font>)</b></font></h3>
+                                                    }
+                                                    {war.playingCards[0].cardsWon.length !== war.maxScore &&
+                                                        <h3><font color="blue"><b>{war.playingCards[0].name}</b></font></h3>
+                                                    }
+                                                </div>
+                                            }
+                                            {war.status !== cst.PLAY_END && <h3><font color="blue"><b>{war.playingCards[0].name}</b></font></h3>}
+                                        </div>
+                                    }
                                 </td>
                                 <td align="center" style={{ width: "23%" }}>
-                                    {war.playingCards.length > 1 && <h3><font color="blue"><b>{war.playingCards[1].name}</b></font></h3>}
+                                    {war.playingCards.length > 1 &&
+                                        <div>
+                                            {war.status === cst.PLAY_END &&
+                                                <div>
+                                                    {war.playingCards[1].cardsWon.length === war.maxScore &&
+                                                        <h3><font color="#00FF00"><b>{war.playingCards[1].name} (<font color="red">winner</font>)</b></font></h3>
+                                                    }
+                                                    {war.playingCards[1].cardsWon.length !== war.maxScore &&
+                                                        <h3><font color="blue"><b>{war.playingCards[1].name}</b></font></h3>
+                                                    }
+                                                </div>
+                                            }
+                                            {war.status !== cst.PLAY_END && <h3><font color="blue"><b>{war.playingCards[1].name}</b></font></h3>}
+                                        </div>
+                                    }
                                     {war.playingCards.length <= 1 && <p>&nbsp;</p>}
                                 </td>
                                 <td align="center" style={{ width: "23%" }}>
-                                    {war.playingCards.length > 2 && <h3><font color="blue"><b>{war.playingCards[2].name}</b></font></h3>}
+                                    {war.playingCards.length > 2 &&
+                                        <div>
+                                            {war.status === cst.PLAY_END &&
+                                                <div>
+                                                    {war.playingCards[2].cardsWon.length === war.maxScore &&
+                                                        <h3><font color="#00FF00"><b>{war.playingCards[2].name} (<font color="red">winner</font>)</b></font></h3>
+                                                    }
+                                                    {war.playingCards[2].cardsWon.length !== war.maxScore &&
+                                                        <h3><font color="blue"><b>{war.playingCards[2].name}</b></font></h3>
+                                                    }
+                                                </div>
+                                            }
+                                            {war.status !== cst.PLAY_END && <h3><font color="blue"><b>{war.playingCards[2].name}</b></font></h3>}
+                                        </div>
+                                    }
                                     {war.playingCards.length <= 2 && <p>&nbsp;</p>}
                                 </td>
                                 <td align="center" style={{ width: "23%" }}>
-                                    {war.playingCards.length > 3 && <h3><font color="blue"><b>{war.playingCards[3].name}</b></font></h3>}
+                                    {war.playingCards.length > 3 &&
+                                        <div>
+                                            {war.status === cst.PLAY_END &&
+                                                <div>
+                                                    {war.playingCards[3].cardsWon.length === war.maxScore &&
+                                                        <h3><font color="#00FF00"><b>{war.playingCards[3].name} (<font color="red">winner</font>)</b></font></h3>
+                                                    }
+                                                    {war.playingCards[3].cardsWon.length !== war.maxScore &&
+                                                        <h3><font color="blue"><b>{war.playingCards[3].name}</b></font></h3>
+                                                    }
+                                                </div>
+                                            }
+                                            {war.status !== cst.PLAY_END && <h3><font color="blue"><b>{war.playingCards[3].name}</b></font></h3>}
+                                        </div>
+                                    }
                                     {war.playingCards.length <= 3 && <p>&nbsp;</p>}
                                 </td>
                             </tr>
@@ -233,14 +289,8 @@ class PlayComponent extends React.Component {
     }
 }
 
-const warPlaying = (state) => {
-    //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-    console.log("PlayComponent/warPlaying/state.war.playingCards: " + JSON.stringify(state.war.playingCards, null, 5))
-    return state.war
-}
-
 const mapStateToProps = (state) => ({
-    war: warPlaying(state),//state.war,
+    war: state.war,
     location: state.locations,
     dealer: state.dealers,
 })

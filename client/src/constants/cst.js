@@ -10,17 +10,19 @@ const constants = {
     STATUS_LOCATION_ADD: "status_location_add",
     STATUS_PLAYER_ADD: "status_player_add",
 
+    // get: location, dealer, players
     STATUS_SET_NEW_GAME: "status_set_new_game",
-    STATUS_SET_NEW_CONFIG: "status_set_new_config",
     SET_STATUS: "set_status",
 
     PLAY_CARDS_SHOW: "play_cards_show",
     PLAY_CARDS_DISTRIBUTE: "play_cards_distribute",
+    PLAY_SET_NEW_ROUND: "play_set_new_round",
     PLAY_END: "play_end",
 
     PLAY_RESULT_PLAYER_WON: "play_player_won",
     PLAY_RESULT_PLAYER_LOSE: "play_player_lose",
     PLAY_RESULT_TIE: "play_result_tie",
+    PLAY_SET_MAX_SCORE: "play_set_max_score",
 
     DEALER_ADD_NEW: "dealer_add_new",
     // Get all from the DB
