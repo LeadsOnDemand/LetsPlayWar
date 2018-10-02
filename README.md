@@ -1,4 +1,4 @@
-# Let's Play War (ATTENTION: WE COULD NOT PLAY MORE THAN ONE ROUND...)
+# Let's Play War (ATTENTION: IT WORKS BUT STILL HAVE SOME BUG, WILL BE FIXED IN FEW HOURS...)
 
 ## Technologies (3-tier architecture)
 > * **Front-end**: **React-Redux** (built with: "**create-react-app**"),
