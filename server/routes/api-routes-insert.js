@@ -1,5 +1,3 @@
-const Sequelize = require('sequelize');
-const models = require('../models') // DB's models
 const db = require("../models");
 
 module.exports = function (app) {
@@ -9,6 +7,7 @@ module.exports = function (app) {
             .catch(err => res.status(500).json(err))
     })
     app.post("/api/add/loc_players", (req, res, next) => {
+        let lastO = []
         const insertOneByOne = (list) => {
             if (list.length > 0) {
                 let anObj = list.splice(0, 1)
@@ -18,16 +17,15 @@ module.exports = function (app) {
                         playerId: anObj[0].playerId
                     }
                 }).then(response => {
+                    lastO = response
                     if (response.length == 0)
                         db.loc_player.create(anObj[0])
-                            .then(resp => {
-                                if (list.length == 0) res.status(200).json(resp)
-                                else insertOneByOne(list)
-                            })
-                            .catch(err => res.status(500).json(err))
-                    else res.status(200).json(response)
-                }).catch(err => res.status(500).json(err))
+                            .then(resp => insertOneByOne(list))
+                            .catch(next)
+                    else insertOneByOne(list)
+                }).catch(next)
             }
+            else res.status(200).json(lastO)
         }
         insertOneByOne([...req.body])
     })
@@ -81,16 +79,18 @@ module.exports = function (app) {
                 aScore = list.splice(0, 1)
                 db.loc_player.findAll({ where: { locationId: aScore[0].locationId, playerId: aScore[0].playerId } })
                     .then(response => {
-                        db.score.create({
-                            isWinning: aScore[0].isWinning,
-                            gain: aScore[0].gain,
-                            locPlayerId: response[0].id
-                        }).then(scoreResp => {
-                            if (list.length == 0)
-                                res.status(200).json(scoreResp)
-                            else scoreByScore(list)
-                        }).catch(err => res.status(500).json(err))
-
+                        if (response.length > 0) {
+                            db.score.create({
+                                isWinning: aScore[0].isWinning,
+                                gain: aScore[0].gain,
+                                locPlayerId: response[0].id
+                            }).then(scoreResp => {
+                                if (list.length == 0)
+                                    res.status(200).json(scoreResp)
+                                else scoreByScore(list)
+                            }).catch(err => res.status(500).json(err))
+                        }
+                        else scoreByScore(list)
                     }).catch(err => res.status(500).json(err))
             }
         }

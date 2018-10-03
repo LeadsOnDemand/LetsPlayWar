@@ -2,6 +2,10 @@ import axios from "axios"
 
 import cst from '../constants/cst'
 
+const set4Show = (playingData) => {
+
+}
+
 const warGameActions = {
     setStatus: (newStatus) => {
         return dispatch => dispatch({
@@ -13,101 +17,45 @@ const warGameActions = {
     playGame: () => {
         return (dispatch, getState) => {
             let war = getState().war
-            //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-            console.log("warGameAction/playGame/war.status: " + war.status)
-            if (war.playingCards.length === 0)
+            console.log("warGameActions/playGame/war.status: " +war.status)
+            if (war.round === 0) {
                 dispatch({
-                    type: cst.STATUS_SET_NEW_GAME
+                    type: cst.STATUS_SET_NEW_ROUND,
                 })
-            else {
-                if (war.round === 0 && war.playingCards[0].dealerCard.id !== undefined)
-                    dispatch({
-                        type: cst.PLAY_CARDS_DISTRIBUTE
-                    })
-
-                if (war.status === cst.PLAY_CARDS_DISTRIBUTE) {
-                    dispatch({
-                        type: cst.SET_STATUS,
-                        payload: cst.PLAY_CARDS_SHOW,
+            }
+            else if (war.status === cst.PLAY_CARDS_DISTRIBUTE) {
+                dispatch({
+                    type: cst.SET_STATUS,
+                    payload: cst.PLAY_CARDS_SHOW,
+                })
+            }
+            else if (war.status === cst.PLAY_CARDS_SHOW) {
+                dispatch({
+                    type: cst.STATUS_SET_NEW_ROUND,
+                })
+            }
+            else if (war.status === cst.PLAY_END) {
+                let location = getState().locations.active
+                let score2Save = []
+                for (let i = 0; i < war.playingCards.length; i++) {
+                    score2Save.push({
+                        isWinning: war.playingCards[i].cardsWon.length === war.maxScore ? true : false,
+                        gain: 0,
+                        locationId: location[0].id,
+                        playerId: war.playingCards[i].id
                     })
                 }
-                else if (war.status === cst.PLAY_CARDS_SHOW) {
-                    for (let i = 0; i < war.playingCards.length; i++) {
-                        let obj = war.playingCards[i]
-                        if (obj.dealerCard.val === obj.playerCard.val)
-                            dispatch({
-                                type: cst.PLAY_RESULT_TIE,
-                                payload: obj.id,
-                            })
-                        else if (obj.dealerCard.val < obj.playerCard.val)
-                            dispatch({
-                                type: cst.PLAY_RESULT_PLAYER_WON,
-                                payload: obj.id,
-                            })
-                        else if (obj.dealerCard.val > obj.playerCard.val)
-                            dispatch({
-                                type: cst.PLAY_RESULT_PLAYER_LOSE,
-                                payload: obj.id,
-                            })
-                    }
-                    const dealerCardsNum = war.dealerCards.length
-                    if ((dealerCardsNum < war.playingCards.length * 2) || (war.round > 9)) {
-                        const location = getState().locations.active[0]
 
-                        let maxScore = -1
-
-                        // get the Max score
-                        for (let i = 0; i < war.playingCards.length; i++)
-                            if (war.playingCards[i].cardsWon.length > maxScore)
-                                maxScore = war.playingCards[i].cardsWon.length
-
-                        let score2Save = []
-                        for (let i = 0; i < war.playingCards.length; i++) {
-                            // the winners
-                            if (war.playingCards[i].cardsWon.length === maxScore)
-                                score2Save.push({
-                                    isWinning: true,
-                                    gain: 0,
-                                    locationId: location.id,
-                                    playerId: war.playingCards[i].id
-                                })
-                            // the losers
-                            else
-                                score2Save.push({
-                                    isWinning: false,
-                                    gain: 0,
-                                    locationId: location.id,
-                                    playerId: war.playingCards[i].id
-                                })
-                        }
+                //LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
+                console.log("warGameActions/playGame/score2Save: " + JSON.stringify(score2Save, null, 5))
+                axios.post("http://localhost:3090/api/add/score/", score2Save)
+                    .then(response => {
+                        //LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
+                        console.log("warGameActions/playGame/response: " + JSON.stringify(response, null, 5))
                         dispatch({
-                            type: cst.PLAY_SET_MAX_SCORE,
-                            payload: maxScore
+                            type: cst.STATUS_SET_NEW_GAME
                         })
-                        //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-                        console.log("warGameAction/playGame/score2Save: " + JSON.stringify(score2Save, null, 5))
-                        axios.post("http://localhost:3090/api/add/score/", score2Save)
-                            .then(response => {
-                                dispatch({
-                                    type: cst.SET_STATUS,
-                                    payload: cst.PLAY_CARDS_DISTRIBUTE
-                                })
-                                dispatch({
-                                    type: cst.PLAY_SET_NEW_ROUND
-                                })
-                            }).catch(err => console.log("Get Dealers, err: " + err))
-
-                    }
-                    else
-                        dispatch({
-                            type: cst.PLAY_CARDS_DISTRIBUTE
-                        })
-                }
-                else if (war.status === cst.PLAY_END) {
-                    dispatch({
-                        type: cst.STATUS_SET_NEW_GAME
-                    })
-                }
+                    }).catch(err => console.log("Save Score Error: " + err))
             }
         }
     },
@@ -163,8 +111,8 @@ const warGameActions = {
                 id: values.player1,
                 name: pl[0].name,
                 cardsWon: [],
-                dealerCard: {},
-                playerCard: {}
+                dealerCardId: -1,
+                playerCardId: -1
             })
 
             let obj4loc_player = []
@@ -187,8 +135,8 @@ const warGameActions = {
                     id: values.player2,
                     name: pl[0].name,
                     cardsWon: [],
-                    dealerCard: {},
-                    playerCard: {}
+                    dealerCardId: -1,
+                    playerCardId: -1
                 })
             }
 
@@ -206,8 +154,8 @@ const warGameActions = {
                     id: values.player3,
                     name: pl[0].name,
                     cardsWon: [],
-                    dealerCard: {},
-                    playerCard: {}
+                    dealerCardId: -1,
+                    playerCardId: -1
                 })
             }
 
@@ -225,11 +173,10 @@ const warGameActions = {
                     id: values.player4,
                     name: pl[0].name,
                     cardsWon: [],
-                    dealerCard: {},
-                    playerCard: {}
+                    dealerCardId: -1,
+                    playerCardId: -1
                 })
             }
-
             axios.post("http://localhost:3090/api/add/loc_dealer/", obj4loc_dealer)
                 .then(respLocDealer => {
                     axios.post("http://localhost:3090/api/add/loc_players/", obj4loc_player)
@@ -238,16 +185,12 @@ const warGameActions = {
                                 type: cst.STATUS_SELECT_PLAYERS,
                                 payload: playingCards
                             })
-
                             dispatch({
                                 type: cst.PLAY_CARDS_DISTRIBUTE
                             })
-                            dispatch({ // We could start to play
-                                type: cst.SET_STATUS,
-                                payload: cst.PLAY_CARDS_DISTRIBUTE
-                            })
-                        }).catch(err => console.log("Insertion to 'loc_player' failed, err: " + err))
-                }).catch(err => console.log("Insertion to 'loc_dealer' failed, err: " + err))
+                        })
+                        .catch(err => console.log(JSON.stringify(err, null, 5)))
+                }).catch(err => console.log(err))
         }
     },
 

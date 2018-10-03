@@ -1,132 +1,173 @@
 import cst from '../constants/cst'
 
+const localCst = {
+    cardAvailable: 0,
+    cardTakenTempo: 1,
+    cardTakenByPlayers: 2
+}
+
 const initialStates = {
-    dealerCards: [
-        { id: 1, type: cst.SPADES, val: 1 }, { id: 2, type: cst.SPADES, val: 2 }, { id: 3, type: cst.SPADES, val: 3 }, { id: 4, type: cst.SPADES, val: 4 },
-        { id: 5, type: cst.SPADES, val: 5 }, { id: 6, type: cst.SPADES, val: 6 }, { id: 7, type: cst.SPADES, val: 7 }, { id: 8, type: cst.SPADES, val: 8 },
-        { id: 9, type: cst.SPADES, val: 8 }, { id: 10, type: cst.SPADES, val: 10 }, { id: 11, type: cst.SPADES, val: 11 }, { id: 12, type: cst.SPADES, val: 12 },
-        { id: 12, type: cst.SPADES, val: 13 },
-
-        { id: 14, type: cst.CLUBS, val: 1 }, { id: 15, type: cst.CLUBS, val: 2 }, { id: 17, type: cst.CLUBS, val: 3 }, { id: 17, type: cst.CLUBS, val: 4 },
-        { id: 18, type: cst.CLUBS, val: 5 }, { id: 19, type: cst.CLUBS, val: 6 }, { id: 20, type: cst.CLUBS, val: 7 }, { id: 21, type: cst.CLUBS, val: 8 },
-        { id: 22, type: cst.CLUBS, val: 8 }, { id: 23, type: cst.CLUBS, val: 10 }, { id: 24, type: cst.CLUBS, val: 11 }, { id: 25, type: cst.CLUBS, val: 12 },
-        { id: 26, type: cst.CLUBS, val: 13 },
-
-        { id: 27, type: cst.HEARTS, val: 1 }, { id: 28, type: cst.HEARTS, val: 2 }, { id: 29, type: cst.HEARTS, val: 3 }, { id: 30, type: cst.HEARTS, val: 4 },
-        { id: 31, type: cst.HEARTS, val: 5 }, { id: 32, type: cst.HEARTS, val: 6 }, { id: 33, type: cst.HEARTS, val: 7 }, { id: 34, type: cst.HEARTS, val: 8 },
-        { id: 35, type: cst.HEARTS, val: 8 }, { id: 36, type: cst.HEARTS, val: 10 }, { id: 37, type: cst.HEARTS, val: 11 }, { id: 38, type: cst.HEARTS, val: 12 },
-        { id: 39, type: cst.HEARTS, val: 13 },
-
-        { id: 40, type: cst.DIAMS, val: 1 }, { id: 41, type: cst.DIAMS, val: 2 }, { id: 42, type: cst.DIAMS, val: 3 }, { id: 43, type: cst.DIAMS, val: 4 },
-        { id: 44, type: cst.DIAMS, val: 5 }, { id: 45, type: cst.DIAMS, val: 6 }, { id: 46, type: cst.DIAMS, val: 7 }, { id: 47, type: cst.DIAMS, val: 8 },
-        { id: 48, type: cst.DIAMS, val: 8 }, { id: 49, type: cst.DIAMS, val: 10 }, { id: 50, type: cst.DIAMS, val: 11 }, { id: 51, type: cst.DIAMS, val: 12 },
-        { id: 52, type: cst.DIAMS, val: 13 },
+    // Values: 
+    //    0 ==> Available
+    //    1 ==> Is taken temporarily
+    //    2 ==> Players got it
+    // Why to use this system? Because, we could figure out quickly the state of each card
+    //    for example, if "availableCards[5] is 0" means, the card is available and the type 
+    //    "SPADES", the values is 6 (we start with 0, not 1, so we add 1 more...)
+    availableCards: [
+        // SPADES
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0,
+        // CLUBS
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0,
+        // HEARTS 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0,
+        //DIAMS
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
     ],
     round: 0,
-    playingCards: [], // { id: playerId, name: "", cardsWon: [], dealerCard: {}, playerCard: {}}
+    playingCards: [], // { id: playerCard, name: "", cardsWon: [], dealerCard: -1, playerCard: -1}
     maxScore: -1,
     status: cst.STATUS_SET_NEW_GAME,
 }
 
 const warReducer = (state = initialStates, action) => {
-    switch (action.type) {
-        case cst.PLAY_CARDS_DISTRIBUTE: {
-            let cards = [...state.dealerCards]
-            let playing = [...state.playingCards]
-            for (let i = 0; i < playing.length; i++) {
-                let index = Math.floor(Math.random() * cards.length)
-                // Get (physically) a card for the dealer
-                playing[i].dealerCard = cards.splice(index, 1)[0]
-                index = Math.floor(Math.random() * cards.length)
-                // Get (physically) a card for the player
-                playing[i].playerCard = cards.splice(index, 1)[0]
+    const getAnAvailableListCard = () => {
+        let result = []
+        let tempoList = []
+        for (let j = 0; j < state.playingCards.length; j++) {
+            result.push({
+                dealerCard: -1,
+                playerCard: -1
+            })
+            let i = -1, k = -1
+            let num = Math.floor(Math.random() * state.availableCards.length)
+            let isExistInTempo = false
+            // for dealerCardCard
+            for (i = 0; i < state.availableCards.length; i++) {
+                for (k = 0; k < tempoList.length; k++) {
+                    if (tempoList[i] === num) {
+                        isExistInTempo = true
+                        break
+                    }
+                }
+                if (state.availableCards[i] === 0 && !isExistInTempo) {
+                    tempoList.push(num)
+                    result[j].dealerCard = num
+                    break
+                }
+                num = (num + 1) % state.availableCards.length
             }
-            return Object.assign({}, state, {
-                round: state.round + 1,
-                dealerCards: [...cards],
-                playingCards: [...playing],
-            })
+            // for "playerCard"
+            isExistInTempo = false
+            // if no more available card
+            if (i === state.availableCards.length) return []
+            num = Math.floor(Math.random() * state.availableCards.length)
+            // for playerCardCard
+            for (i = 0; i < state.availableCards.length; i++) {
+                for (k = 0; k < tempoList.length; k++) {
+                    if (tempoList[i] === num) {
+                        isExistInTempo = true
+                        break
+                    }
+                }
+                if (state.availableCards[i] === 0 && !isExistInTempo) {
+                    tempoList.push(num)
+                    result[j].playerCard = num
+                    break
+                }
+                num = (num + 1) % state.availableCards.length
+            }
+            if (i === state.availableCards.length) return []
         }
-        case cst.PLAY_RESULT_PLAYER_WON: {
-            let allCards = [...state.dealerCards]
-            let playing = [...state.playingCards]
-            let thePlayer = playing.filter(p => p.id === action.payload ? p : null)
-            thePlayer[0].cardsWon.push(thePlayer[0].playerCard)
-            thePlayer[0].cardsWon.push(thePlayer[0].dealerCard)
-            thePlayer[0].dealerCard = {}
-            thePlayer[0].playerCard = {}
-            //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-            console.log("warReducer/PLAY_RESULT_PLAYER_WON/player: " + JSON.stringify(thePlayer, null, 5))
+        //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+        console.log("warReducer/getAnAvailableListCard/result: " + JSON.stringify(result, null, 5))
+        return result
+    }
+
+    const compare = (val1, val2) => {
+        const v1 = (val1 + 1) % 14 // we are going to have: 1-13
+        const v2 = (val2 + 1) % 14 // we are going to have: 1-13        
+        if (v1 === v2) return 0
+        if (v1 < v2) return -1
+        return 1
+    }
+
+    switch (action.type) {
+        case cst.STATUS_SET_NEW_ROUND: {
+            let availableCards = [...state.availableCards]
+            let cards = [...state.playingCards]
+            let maxS = state.maxScore
+            let newCards = getAnAvailableListCard()
+            if (state.round > 0) {
+                for (let i = 0; i < cards.length; i++) {
+                    let winner = compare(cards[i].playerCard, cards[i].dealerCard)
+                    if (winner === 0) { // tie
+                        cards[i].cardsWon.push(cards[i].playerCard)
+                        availableCards[cards[i].playerCard] = localCst.cardTakenByPlayers // the card won by the player is recorded
+                        availableCards[cards[i].dealerCard] = localCst.cardAvailable // available again
+                    }
+                    else if (winner > 0) { // the player wins both cards
+                        cards[i].cardsWon.push(cards[i].playerCard)
+                        availableCards[cards[i].playerCard] = localCst.cardTakenByPlayers // the card won by the player is recorded
+                        cards[i].cardsWon.push(cards[i].dealerCard)
+                        availableCards[cards[i].dealerCard] = localCst.cardTakenByPlayers // the card won by the player (from the dealer) is recorded
+                    }
+                    else {
+                        availableCards[cards[i].playerCard] = localCst.cardAvailable // available again
+                        availableCards[cards[i].dealerCard] = localCst.cardAvailable // available again
+                    }
+                    if (cards[i].cardsWon.length > state.maxScore) maxS = cards[i].cardsWon.length
+                }
+            }
+            let good2Go = state.round < 10
+            if (newCards.length > 0) {
+                for (let i = 0; i < cards.length; i++) {
+                    cards[i].playerCard = newCards[i].playerCard
+                    availableCards[newCards[i].playerCard] = localCst.cardTakenTempo // temporarily taken
+                    cards[i].dealerCard = newCards[i].dealerCard
+                    availableCards[newCards[i].dealerCard] = localCst.cardTakenTempo // temporarily taken
+                }
+
+                good2Go = newCards[newCards.length - 1].dealerCard > -1 && newCards[newCards.length - 1].playerCard > -1 && state.round < 10
+            }
+
             return Object.assign({}, state, {
-                dealerCards: [...allCards],
-                playingCards: state.playingCards.map(p => p.id === action.payload ? { ...thePlayer[0] } : p),
-                status: state.dealerCards.length >= (state.playingCards.length * 2) ? cst.PLAY_CARDS_DISTRIBUTE : cst.PLAY_END
-            })
-        }
-        case cst.PLAY_RESULT_PLAYER_LOSE: {
-            let allCards = [...state.dealerCards]
-            let playing = [...state.playingCards]
-            let thePlayer = playing.filter(p => p.id === action.payload ? p : null)
-            allCards.push(thePlayer[0].playerCard)
-            allCards.push(thePlayer[0].dealerCard)
-            thePlayer[0].dealerCard = {}
-            thePlayer[0].playerCard = {}
-            //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-            console.log("warReducer/PLAY_RESULT_PLAYER_LOSE/player: " + JSON.stringify(thePlayer, null, 5))
-            return Object.assign({}, state, {
-                dealerCards: [...allCards],
-                playingCards: state.playingCards.map(p => p.id === action.payload ? { ...thePlayer[0] } : p),
-                status: cst.PLAY_CARDS_DISTRIBUTE
-            })
-        }
-        case cst.PLAY_RESULT_TIE: {
-            let allCards = [...state.dealerCards]
-            let playing = [...state.playingCards]
-            let thePlayer = playing.filter(p => p.id === action.payload ? p : null)
-            thePlayer[0].cardsWon.push(thePlayer[0].playerCard)
-            allCards.push(thePlayer[0].dealerCard)
-            thePlayer[0].dealerCard = {}
-            thePlayer[0].playerCard = {}
-            //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-            console.log("warReducer/PLAY_RESULT_TIE/player: " + JSON.stringify(thePlayer, null, 5))
-            return Object.assign({}, state, {
-                dealerCards: [...allCards],
-                playingCards: state.playingCards.map(p => p.id === action.payload ? { ...thePlayer[0] } : p),
-                status: state.dealerCards.length >= (state.playingCards.length * 2) ? cst.PLAY_CARDS_DISTRIBUTE : cst.PLAY_END
-            })
-        }
-        case cst.PLAY_SET_MAX_SCORE: {
-            return Object.assign({}, state, {
-                maxScore: action.payload
+                availableCards: [...availableCards],
+                round: good2Go ? state.round + 1 : state.round,
+                playingCards: [...cards],
+                maxScore: maxS,
+                status: good2Go ? cst.PLAY_CARDS_DISTRIBUTE : cst.PLAY_END
             })
         }
         case cst.STATUS_SELECT_PLAYERS: { // no displaying status
             return Object.assign({}, state, {
-                playingCards: action.payload
+                playingCards: action.payload,
+                status: cst.PLAY_CARDS_DISTRIBUTE
             })
         }
-        case cst.PLAY_SET_NEW_ROUND: {
+        case cst.STATUS_SET_NEW_CONFIG: { // with NEW: location, dealer, players
+            return { ...initialStates }
+        }
+        case cst.STATUS_SET_NEW_GAME: { // with same: location, dealer, players
             let pCards = [...state.playingCards]
             for (let i = 0; i < pCards.length; i++) {
                 pCards.cardsWon = []
-                pCards.dealerCard = {}
-                pCards.playerCard = {}
+                pCards.dealerCard = -1
+                pCards.playerCard = -1
             }
             return Object.assign({}, state, {
+                cardsIDWonByPlayers: [],
+                round: 0,
                 maxScore: -1,
                 playingCards: [...pCards],
-                dealerCards: [...initialStates.dealerCards]
+                status: cst.STATUS_SET_NEW_ROUND
             })
         }
-        case cst.STATUS_SET_NEW_CONFIG: {
-            return { ...initialStates }
-        }
-        case cst.PLAY_END: {
-            return { ...initialStates }
-        }
         case cst.SET_STATUS: {
-            //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-            console.log("warReducer/SET_STATUS/action.payload: " + action.payload)
             return Object.assign({}, state, {
                 status: action.payload
             })

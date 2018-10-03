@@ -36,9 +36,7 @@ class MainUIComponent extends React.Component {
                 {(data.status === cst.STATUS_SET_NEW_GAME || data.status === cst.STATUS_SET_NEW_CONFIG) &&
                     <Setting4GameComponent />
                 }
-                {data.status !== cst.STATUS_LOCATION_ADD && data.status !== cst.STATUS_DEALER_ADD && 
-                    data.status !== cst.STATUS_PLAYER_ADD && data.status !== cst.STATUS_SET_NEW_GAME &&
-                    data.status !== cst.STATUS_SET_NEW_CONFIG &&
+                {(data.status === cst.PLAY_CARDS_DISTRIBUTE || data.status === cst.PLAY_CARDS_SHOW || data.status === cst.PLAY_END) &&
                     <PlayComponent />
                 }
             </div>

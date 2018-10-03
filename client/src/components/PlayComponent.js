@@ -6,75 +6,82 @@ import cst from '../constants/cst'
 import('../index.css');
 
 class PlayComponent extends React.Component {
-    renderCard(obj) {
-        return (
-            <div>
-                {obj === undefined &&
-                    <div className="cardFrame">
-                        <div className="cardInner" style={{ backgroundColor: 'black' }}>
-                            <p align="center">&nbsp;</p>
-                            <p align="center">&nbsp;</p>
+    renderCard(cardPosition) {
+        const val = (cardPosition % 13) + 1
+        let type = ""
+        if (cardPosition >= 0 && cardPosition < 13) type = cst.SPADES
+        else if(cardPosition >= 13 && cardPosition < 26) type = cst.CLUBS
+        else if(cardPosition >= 26 && cardPosition < 39) type = cst.HEARTS
+        else if(cardPosition >= 39 && cardPosition < 52) type = cst.DIAMS
+
+            return (
+                <div>
+                    {cardPosition === undefined &&
+                        <div className="cardFrame">
+                            <div className="cardInner" style={{ backgroundColor: 'black' }}>
+                                <p align="center">&nbsp;</p>
+                                <p align="center">&nbsp;</p>
+                            </div>
                         </div>
-                    </div>
-                }
-                {obj !== undefined &&
-                    <div className="cardFrame">
-                        {obj.type === cst.SPADES &&
-                            <div className="cardFrame">
-                                <div className="cardInner">
-                                    <p align="center"><span>&spades;</span></p>
-                                    <p align="center"></p>
-                                    {obj.val < 11 && <p align="center">{obj.val}</p>}
-                                    {obj.val === 11 && <p align="center">J</p>}
-                                    {obj.val === 12 && <p align="center">Q</p>}
-                                    {obj.val === 13 && <p align="center">K</p>}
-                                </div>
-                            </div>
-                        }
-                        {obj.type === cst.CLUBS &&
-                            <div className="cardFrame">
-                                <div className="cardInner">
-                                    <p align="center"><span >&clubs;</span></p>
-                                    <p align="center"></p>
-                                    {obj.val < 11 && <p align="center">{obj.val}</p>}
-                                    {obj.val === 11 && <p align="center">J</p>}
-                                    {obj.val === 12 && <p align="center">Q</p>}
-                                    {obj.val === 13 && <p align="center">K</p>}
-                                </div>
-                            </div>
-                        }
-                        {obj.type === cst.HEARTS &&
-                            <div className="cardFrame">
-                                <div className="cardInner">
-                                    <font color="red">
-                                        <p align="center"><span>&hearts;</span></p>
+                    }
+                    {cardPosition !== undefined &&
+                        <div className="cardFrame">
+                            {type === cst.SPADES &&
+                                <div className="cardFrame">
+                                    <div className="cardInner">
+                                        <p align="center"><span>&spades;</span></p>
                                         <p align="center"></p>
-                                        {obj.val < 11 && <p align="center">{obj.val}</p>}
-                                        {obj.val === 11 && <p align="center">J</p>}
-                                        {obj.val === 12 && <p align="center">Q</p>}
-                                        {obj.val === 13 && <p align="center">K</p>}
-                                    </font>
+                                        {val < 11 && <p align="center">{val}</p>}
+                                        {val === 11 && <p align="center">J</p>}
+                                        {val === 12 && <p align="center">Q</p>}
+                                        {val === 13 && <p align="center">K</p>}
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                        {obj.type === cst.DIAMS &&
-                            <div className="cardFrame">
-                                <div className="cardInner">
-                                    <font color="red">
-                                        <p align="center"><span>&diams;</span></p>
+                            }
+                            {type === cst.CLUBS &&
+                                <div className="cardFrame">
+                                    <div className="cardInner">
+                                        <p align="center"><span >&clubs;</span></p>
                                         <p align="center"></p>
-                                        {obj.val < 11 && <p align="center">{obj.val}</p>}
-                                        {obj.val === 11 && <p align="center">J</p>}
-                                        {obj.val === 12 && <p align="center">Q</p>}
-                                        {obj.val === 13 && <p align="center">K</p>}
-                                    </font>
+                                        {val < 11 && <p align="center">{val}</p>}
+                                        {val === 11 && <p align="center">J</p>}
+                                        {val === 12 && <p align="center">Q</p>}
+                                        {val === 13 && <p align="center">K</p>}
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                    </div>
-                }
-            </div>
-        )
+                            }
+                            {type === cst.HEARTS &&
+                                <div className="cardFrame">
+                                    <div className="cardInner">
+                                        <font color="red">
+                                            <p align="center"><span>&hearts;</span></p>
+                                            <p align="center"></p>
+                                            {val < 11 && <p align="center">{val}</p>}
+                                            {val === 11 && <p align="center">J</p>}
+                                            {val === 12 && <p align="center">Q</p>}
+                                            {val === 13 && <p align="center">K</p>}
+                                        </font>
+                                    </div>
+                                </div>
+                            }
+                            {type === cst.DIAMS &&
+                                <div className="cardFrame">
+                                    <div className="cardInner">
+                                        <font color="red">
+                                            <p align="center"><span>&diams;</span></p>
+                                            <p align="center"></p>
+                                            {val < 11 && <p align="center">{val}</p>}
+                                            {val === 11 && <p align="center">J</p>}
+                                            {val === 12 && <p align="center">Q</p>}
+                                            {val === 13 && <p align="center">K</p>}
+                                        </font>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            )
     }
 
     render() {
