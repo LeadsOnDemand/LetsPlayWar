@@ -36,7 +36,7 @@
 ### Front-End:
 > In a terminal: "**npm run start**" (need to run "**npm install**" to install dependencies first)
 
-## Some User's Interface 
+## Some User's Interfaces
 ### Setup
 We need to setup everything before to start the game:
 > * A **location** (with a **name** and an **address**)
