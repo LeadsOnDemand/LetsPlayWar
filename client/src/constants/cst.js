@@ -15,6 +15,7 @@ const constants = {
     // with same: location, dealer and players
     STATUS_SET_NEW_GAME: "status_set_new_game",
     STATUS_SET_NEW_ROUND: "status_set_new_round",
+    STATUS_SET_FIRST_ROUND: "status_set_first_round",
     SET_STATUS: "set_status",
 
     PLAY_CARDS_SHOW: "play_cards_show",

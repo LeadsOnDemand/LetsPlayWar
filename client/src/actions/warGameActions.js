@@ -1,9 +1,110 @@
 import axios from "axios"
-
 import cst from '../constants/cst'
 
-const set4Show = (playingData) => {
+const localCst = {
+    CARD_AVAILABLE: 0,
+    CARD_TAKEN_TEMPO: 1,
+    CARD_TAKEN_BY_PLAYERS: 2
+}
 
+const getAnAvailableListCard = (war) => {
+    let result = []
+    let tempoList = []
+    for (let j = 0; j < war.playingCards.length; j++) {
+        result.push({
+            dealerCard: -1,
+            playerCard: -1
+        })
+        let i = -1, k = -1
+        let num = Math.floor(Math.random() * war.availableCards.length)
+        let isExistInTempo = false
+        // for dealerCardCard
+        for (i = 0; i < war.availableCards.length; i++) {
+            isExistInTempo = false
+            for (k = 0; k < tempoList.length; k++) {
+                if (tempoList[i] === num) {
+                    isExistInTempo = true
+                    break
+                }
+            }
+            if (war.availableCards[i] === localCst.CARD_AVAILABLE && !isExistInTempo) {
+                tempoList.push(num)
+                result[j].dealerCard = num
+                break
+            }
+            num = (num + 1) % war.availableCards.length
+        }
+        // if no more available card
+        if (i === war.availableCards.length) return []
+        num = Math.floor(Math.random() * war.availableCards.length)
+        // for playerCardCard
+        for (i = 0; i < war.availableCards.length; i++) {
+            isExistInTempo = false
+            for (k = 0; k < tempoList.length; k++) {
+                if (tempoList[i] === num) {
+                    isExistInTempo = true
+                    break
+                }
+            }
+            if (war.availableCards[i] === localCst.CARD_AVAILABLE && !isExistInTempo) {
+                tempoList.push(num)
+                result[j].playerCard = num
+                break
+            }
+            num = (num + 1) % war.availableCards.length
+        }
+        if (i === war.availableCards.length) return []
+    }
+    return result
+}
+
+const compare = (val1, val2) => {
+    const v1 = (val1 % 13) + 1 // we are going to have: 1-13
+    const v2 = (val2 % 13) + 1 // we are going to have: 1-13    
+
+    if (v1 === v2) return 0
+    else if (v1 < v2) return -1
+    return 1
+}
+
+const getNewCards = (war) => {
+    let newCards = getAnAvailableListCard(war)
+    let cards = [...war.playingCards]
+    for (let i = 0; i < cards.length; i++) {
+        cards[i].playerCard = newCards[i].playerCard
+        cards[i].dealerCard = newCards[i].dealerCard
+    }
+    return cards
+}
+
+const getScores = (war) => {
+    let availableCards = [...war.availableCards]
+    let cards = [...war.playingCards]
+    let maxScore = war.maxScore
+    for (let i = 0; i < cards.length; i++) {
+        let winner = compare(cards[i].playerCard, cards[i].dealerCard)
+        if (winner === 0) { // tie
+            cards[i].cardsWon.push(cards[i].playerCard)
+            availableCards[cards[i].playerCard] = localCst.CARD_TAKEN_BY_PLAYERS // the card won by the player is recorded
+            availableCards[cards[i].dealerCard] = localCst.CARD_AVAILABLE // available again
+        }
+        else if (winner > 0) { // the player wins both cards
+            cards[i].cardsWon.push(cards[i].playerCard)
+            availableCards[cards[i].playerCard] = localCst.CARD_TAKEN_BY_PLAYERS // the card won by the player is recorded
+            cards[i].cardsWon.push(cards[i].dealerCard)
+            availableCards[cards[i].dealerCard] = localCst.CARD_TAKEN_BY_PLAYERS // the card won by the player (from the dealer) is recorded
+        }
+        else {
+            availableCards[cards[i].playerCard] = localCst.CARD_AVAILABLE // available again
+            availableCards[cards[i].dealerCard] = localCst.CARD_AVAILABLE // available again
+        }
+        if (cards[i].cardsWon.length > war.maxScore) maxScore = cards[i].cardsWon.length
+    }
+    return {
+        availableCards: availableCards,
+        playingCards: cards,
+        maxScore: maxScore
+    }
 }
 
 const warGameActions = {
@@ -17,45 +118,63 @@ const warGameActions = {
     playGame: () => {
         return (dispatch, getState) => {
             let war = getState().war
-            console.log("warGameActions/playGame/war.status: " +war.status)
-            if (war.round === 0) {
-                dispatch({
-                    type: cst.STATUS_SET_NEW_ROUND,
-                })
-            }
-            else if (war.status === cst.PLAY_CARDS_DISTRIBUTE) {
+            let newCards = getNewCards(war)
+            if (war.status === cst.PLAY_CARDS_DISTRIBUTE) {
+                if (war.round === 0)
+                    dispatch({
+                        type: cst.PLAY_CARDS_DISTRIBUTE,
+                        payload: newCards
+                    })
+                else
+                    dispatch({
+                        type: cst.PLAY_CARDS_SHOW,
+                        payload: getScores(war)
+                    })
                 dispatch({
                     type: cst.SET_STATUS,
-                    payload: cst.PLAY_CARDS_SHOW,
+                    payload: cst.PLAY_CARDS_SHOW
                 })
             }
             else if (war.status === cst.PLAY_CARDS_SHOW) {
-                dispatch({
-                    type: cst.STATUS_SET_NEW_ROUND,
-                })
-            }
-            else if (war.status === cst.PLAY_END) {
-                let location = getState().locations.active
-                let score2Save = []
-                for (let i = 0; i < war.playingCards.length; i++) {
-                    score2Save.push({
-                        isWinning: war.playingCards[i].cardsWon.length === war.maxScore ? true : false,
-                        gain: 0,
-                        locationId: location[0].id,
-                        playerId: war.playingCards[i].id
+                // Game OVER!!!!!
+                if (newCards.length === 0 || war.round >= 10) {
+                    let location = getState().locations.active
+                    let score2Save = []
+                    for (let i = 0; i < war.playingCards.length; i++) {
+                        score2Save.push({
+                            isWinning: war.playingCards[i].cardsWon.length === war.maxScore ? true : false,
+                            gain: 0,
+                            locationId: location[0].id,
+                            playerId: war.playingCards[i].id
+                        })
+                    }
+                    axios.post("http://localhost:3090/api/add/score/", score2Save)
+                        .then(response => {
+                            dispatch({
+                                type: cst.SET_STATUS,
+                                payload: cst.PLAY_END
+                            })
+                        }).catch(err => console.log("Save Score Error: " + err))
+                }
+                else {
+                    dispatch({
+                        type: cst.PLAY_CARDS_DISTRIBUTE,
+                        payload: newCards
+                    })
+                    dispatch({
+                        type: cst.SET_STATUS,
+                        payload: cst.PLAY_CARDS_DISTRIBUTE,
                     })
                 }
-
-                //LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
-                console.log("warGameActions/playGame/score2Save: " + JSON.stringify(score2Save, null, 5))
-                axios.post("http://localhost:3090/api/add/score/", score2Save)
-                    .then(response => {
-                        //LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
-                        console.log("warGameActions/playGame/response: " + JSON.stringify(response, null, 5))
-                        dispatch({
-                            type: cst.STATUS_SET_NEW_GAME
-                        })
-                    }).catch(err => console.log("Save Score Error: " + err))
+            }
+            else if (war.status === cst.PLAY_END) {
+                dispatch({
+                    type: cst.STATUS_SET_NEW_GAME
+                })
+                dispatch({
+                    type: cst.PLAY_CARDS_DISTRIBUTE,
+                    payload: newCards
+                })
             }
         }
     },
@@ -75,8 +194,7 @@ const warGameActions = {
             })
 
             dispatch({
-                type: cst.SET_STATUS,
-                payload: cst.STATUS_SET_NEW_CONFIG,
+                type: cst.STATUS_SET_NEW_CONFIG
             })
         }
     },
@@ -185,8 +303,16 @@ const warGameActions = {
                                 type: cst.STATUS_SELECT_PLAYERS,
                                 payload: playingCards
                             })
+                            let war = getState().war
+                            let newCards = getAnAvailableListCard(war)
+                            let cards = [...war.playingCards]
+                            for (let i = 0; i < cards.length; i++) {
+                                cards[i].playerCard = newCards[i].playerCard
+                                cards[i].dealerCard = newCards[i].dealerCard
+                            }
                             dispatch({
-                                type: cst.PLAY_CARDS_DISTRIBUTE
+                                type: cst.PLAY_CARDS_DISTRIBUTE,
+                                payload: getNewCards(war)
                             })
                         })
                         .catch(err => console.log(JSON.stringify(err, null, 5)))

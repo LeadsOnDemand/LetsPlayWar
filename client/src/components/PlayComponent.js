@@ -25,7 +25,7 @@ class PlayComponent extends React.Component {
                         </div>
                     }
                     {cardPosition !== undefined &&
-                        <div className="cardFrame">
+                        <div>
                             {type === cst.SPADES &&
                                 <div className="cardFrame">
                                     <div className="cardInner">
@@ -107,8 +107,8 @@ class PlayComponent extends React.Component {
                             <tr style={{ width: "100%", border: "2px solid black", backgroundColor: "#f2ecd6" }}>
                                 <td align="center" style={{ width: "23%" }}>
                                     <div>
-                                        {war.status === cst.PLAY_CARDS_DISTRIBUTE && <div>{this.renderCard()}</div>}
-                                        {(war.status === cst.PLAY_CARDS_SHOW || war.status === cst.PLAY_END) &&
+                                        {(war.status === cst.PLAY_CARDS_DISTRIBUTE || war.status === cst.PLAY_END) && <div>{this.renderCard()}</div>}
+                                        {war.status === cst.PLAY_CARDS_SHOW &&
                                             <div>
                                                 {this.renderCard(war.playingCards[0].dealerCard)}
                                             </div>
@@ -118,8 +118,8 @@ class PlayComponent extends React.Component {
                                 <td align="center" style={{ width: "23%" }}>
                                     {war.playingCards.length > 1 &&
                                         <div>
-                                            {war.status === cst.PLAY_CARDS_DISTRIBUTE && <div>{this.renderCard()}</div>}
-                                            {(war.status === cst.PLAY_CARDS_SHOW || war.status === cst.PLAY_END) &&
+                                            {(war.status === cst.PLAY_CARDS_DISTRIBUTE || war.status === cst.PLAY_END) && <div>{this.renderCard()}</div>}
+                                            {war.status === cst.PLAY_CARDS_SHOW &&
                                                 <div>{this.renderCard(war.playingCards[1].dealerCard)}</div>
                                             }
                                         </div>
@@ -129,8 +129,8 @@ class PlayComponent extends React.Component {
                                 <td align="center" style={{ width: "23%" }}>
                                     {war.playingCards.length > 2 &&
                                         <div>
-                                            {war.status === cst.PLAY_CARDS_DISTRIBUTE && <div>{this.renderCard()}</div>}
-                                            {(war.status === cst.PLAY_CARDS_SHOW || war.status === cst.PLAY_END) &&
+                                            {(war.status === cst.PLAY_CARDS_DISTRIBUTE || war.status === cst.PLAY_END) && <div>{this.renderCard()}</div>}
+                                            {war.status === cst.PLAY_CARDS_SHOW &&
                                                 <div>{this.renderCard(war.playingCards[2].dealerCard)}</div>
                                             }
                                         </div>
@@ -140,8 +140,8 @@ class PlayComponent extends React.Component {
                                 <td align="center" style={{ width: "23%" }}>
                                     {war.playingCards.length > 3 &&
                                         <div>
-                                            {war.status === cst.PLAY_CARDS_DISTRIBUTE && <div>{this.renderCard()}</div>}
-                                            {(war.status === cst.PLAY_CARDS_SHOW || war.status === cst.PLAY_END) &&
+                                            {(war.status === cst.PLAY_CARDS_DISTRIBUTE || war.status === cst.PLAY_END) && <div>{this.renderCard()}</div>}
+                                            {war.status === cst.PLAY_CARDS_SHOW &&
                                                 <div>{this.renderCard(war.playingCards[3].dealerCard)}</div>
                                             }
                                         </div>
@@ -153,8 +153,8 @@ class PlayComponent extends React.Component {
                             <tr style={{ width: "100%", border: "2px solid black", backgroundColor: "#9cbcfc" }}>
                                 <td align="center" style={{ width: "23%" }}>
                                     <div>
-                                        {war.status === cst.PLAY_CARDS_DISTRIBUTE && <div>{this.renderCard()}</div>}
-                                        {(war.status === cst.PLAY_CARDS_SHOW || war.status === cst.PLAY_END) &&
+                                        {(war.status === cst.PLAY_CARDS_DISTRIBUTE || war.status === cst.PLAY_END) && <div>{this.renderCard()}</div>}
+                                        {war.status === cst.PLAY_CARDS_SHOW &&
                                             <div>{this.renderCard(war.playingCards[0].playerCard)}</div>
                                         }
                                     </div>
@@ -162,8 +162,8 @@ class PlayComponent extends React.Component {
                                 <td align="center" style={{ width: "23%" }}>
                                     {war.playingCards.length > 1 &&
                                         <div>
-                                            {war.status === cst.PLAY_CARDS_DISTRIBUTE && <div>{this.renderCard()}</div>}
-                                            {(war.status === cst.PLAY_CARDS_SHOW || war.status === cst.PLAY_END) &&
+                                            {(war.status === cst.PLAY_CARDS_DISTRIBUTE || war.status === cst.PLAY_END) && <div>{this.renderCard()}</div>}
+                                            {war.status === cst.PLAY_CARDS_SHOW &&
                                                 <div>{this.renderCard(war.playingCards[1].playerCard)}</div>
                                             }
                                         </div>
@@ -173,8 +173,8 @@ class PlayComponent extends React.Component {
                                 <td align="center" style={{ width: "23%" }}>
                                     {war.playingCards.length > 2 &&
                                         <div>
-                                            {war.status === cst.PLAY_CARDS_DISTRIBUTE && <div>{this.renderCard()}</div>}
-                                            {(war.status === cst.PLAY_CARDS_SHOW || war.status === cst.PLAY_END) &&
+                                            {(war.status === cst.PLAY_CARDS_DISTRIBUTE || war.status === cst.PLAY_END) && <div>{this.renderCard()}</div>}
+                                            {war.status === cst.PLAY_CARDS_SHOW &&
                                                 <div>{this.renderCard(war.playingCards[2].playerCard)}</div>
                                             }
                                         </div>
@@ -184,8 +184,8 @@ class PlayComponent extends React.Component {
                                 <td align="center" style={{ width: "23%" }}>
                                     {war.playingCards.length > 3 &&
                                         <div>
-                                            {war.status === cst.PLAY_CARDS_DISTRIBUTE && <div>{this.renderCard()}</div>}
-                                            {(war.status === cst.PLAY_CARDS_SHOW || war.status === cst.PLAY_END) &&
+                                            {(war.status === cst.PLAY_CARDS_DISTRIBUTE || war.status === cst.PLAY_END) && <div>{this.renderCard()}</div>}
+                                            {war.status === cst.PLAY_CARDS_SHOW &&
                                                 <div>{this.renderCard(war.playingCards[3].playerCard)}</div>
                                             }
                                         </div>
@@ -201,7 +201,7 @@ class PlayComponent extends React.Component {
                                             {war.status === cst.PLAY_END &&
                                                 <div>
                                                     {war.playingCards[0].cardsWon.length === war.maxScore &&
-                                                        <h3><font color="#00FF00"><b>{war.playingCards[0].name} (<font color="red">winner</font>)</b></font></h3>
+                                                        <h3><font color="#00FF00"><b>{war.playingCards[0].name} (<font color="#00FF00">winner</font>)</b></font></h3>
                                                     }
                                                     {war.playingCards[0].cardsWon.length !== war.maxScore &&
                                                         <h3><font color="blue"><b>{war.playingCards[0].name}</b></font></h3>
@@ -218,7 +218,7 @@ class PlayComponent extends React.Component {
                                             {war.status === cst.PLAY_END &&
                                                 <div>
                                                     {war.playingCards[1].cardsWon.length === war.maxScore &&
-                                                        <h3><font color="#00FF00"><b>{war.playingCards[1].name} (<font color="red">winner</font>)</b></font></h3>
+                                                        <h3><font color="#00FF00"><b>{war.playingCards[1].name} (<font color="#00FF00">winner</font>)</b></font></h3>
                                                     }
                                                     {war.playingCards[1].cardsWon.length !== war.maxScore &&
                                                         <h3><font color="blue"><b>{war.playingCards[1].name}</b></font></h3>
@@ -236,7 +236,7 @@ class PlayComponent extends React.Component {
                                             {war.status === cst.PLAY_END &&
                                                 <div>
                                                     {war.playingCards[2].cardsWon.length === war.maxScore &&
-                                                        <h3><font color="#00FF00"><b>{war.playingCards[2].name} (<font color="red">winner</font>)</b></font></h3>
+                                                        <h3><font color="#00FF00"><b>{war.playingCards[2].name} (<font color="#00FF00">winner</font>)</b></font></h3>
                                                     }
                                                     {war.playingCards[2].cardsWon.length !== war.maxScore &&
                                                         <h3><font color="blue"><b>{war.playingCards[2].name}</b></font></h3>
@@ -254,7 +254,7 @@ class PlayComponent extends React.Component {
                                             {war.status === cst.PLAY_END &&
                                                 <div>
                                                     {war.playingCards[3].cardsWon.length === war.maxScore &&
-                                                        <h3><font color="#00FF00"><b>{war.playingCards[3].name} (<font color="red">winner</font>)</b></font></h3>
+                                                        <h3><font color="#00FF00"><b>{war.playingCards[3].name} (<font color="#00FF00">winner</font>)</b></font></h3>
                                                     }
                                                     {war.playingCards[3].cardsWon.length !== war.maxScore &&
                                                         <h3><font color="blue"><b>{war.playingCards[3].name}</b></font></h3>
@@ -288,9 +288,6 @@ class PlayComponent extends React.Component {
                         </tbody></table>
                     }
                 </div>
-                {war.status === cst.PLAY_END &&
-                    <div>Game Over!</div>
-                }
             </div>
         )
     }
