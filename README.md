@@ -59,6 +59,9 @@ We need to setup everything before to start the game:
 ### Got Winner(s)
 ![alt text](assets/gotWinners.jpg)
 
+### Players could be between 1 and 4 by table of game
+![alt text](assets/show2players.jpg)
+
 > **Note**: "1" is the smallest value in this App, which is not true in reality. But, the main purpose of the exercise is to build a **3-tier Architecture**. With a very easy step, we could fix this problem, but it's not the priority right now! 
 ---
 
