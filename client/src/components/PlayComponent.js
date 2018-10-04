@@ -7,7 +7,7 @@ import('../index.css');
 
 class PlayComponent extends React.Component {
     renderCard(cardPosition) {
-        const val = (cardPosition % 13) + 1
+        const val = (cardPosition % 13)
         let type = ""
         if (cardPosition >= 0 && cardPosition < 13) type = cst.SPADES
         else if(cardPosition >= 13 && cardPosition < 26) type = cst.CLUBS
