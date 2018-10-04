@@ -98,7 +98,7 @@ const getScores = (war) => {
             availableCards[cards[i].playerCard] = localCst.CARD_AVAILABLE // available again
             availableCards[cards[i].dealerCard] = localCst.CARD_AVAILABLE // available again
         }
-        if (cards[i].cardsWon.length > war.maxScore) maxScore = cards[i].cardsWon.length
+        if (cards[i].cardsWon.length > maxScore) maxScore = cards[i].cardsWon.length
     }
     return {
         availableCards: availableCards,
