@@ -81,7 +81,7 @@ There is a simple card game called [war](https://www.bicyclecards.com/how-to-pla
  
 ## Technical Requirements
 1. There is no time limit. Take as long as you think you need.
-2. You __must__ use a front-end library or framework such as angular, react, vue, eccetera.
+2. You __must__ use a front-end library or framework such as angular, react, vue, etc.
 3. You __must__ write a backend component, but you are free to use any language you wish. Here at LOD, we use Java, Golang, and Typescript/JavaScript running on node.js. However, you are free to use whatever language you wish.
 4. Please provide details on how to compile and run your example.
 
