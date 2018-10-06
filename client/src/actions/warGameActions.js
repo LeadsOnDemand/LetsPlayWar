@@ -1,59 +1,54 @@
 import axios from "axios"
 import cst from '../constants/cst'
 
-const localCst = {
-    CARD_AVAILABLE: 0,
-    CARD_TAKEN_TEMPO: 1,
-    CARD_TAKEN_BY_PLAYERS: 2
-}
-
 const getAnAvailableListCard = (war) => {
     let result = []
     let tempoList = []
+    let cards = [...war.availableCards]
     for (let j = 0; j < war.playingCards.length; j++) {
         result.push({
             dealerCard: -1,
             playerCard: -1
         })
-        let i = -1, k = -1
-        let num = Math.floor(Math.random() * war.availableCards.length)
+        let i = -1
+        let num = Math.floor(Math.random() * cards.length)
         let isExistInTempo = false
         // for dealerCardCard
-        for (i = 0; i < war.availableCards.length; i++) {
+        for (i = 0; i < cards.length; i++) {
             isExistInTempo = false
-            for (k = 0; k < tempoList.length; k++) {
-                if (tempoList[i] === num) {
+            for (let k = 0; k < tempoList.length; k++) {
+                if (tempoList[k] === num) {
                     isExistInTempo = true
                     break
                 }
             }
-            if (war.availableCards[i] === localCst.CARD_AVAILABLE && !isExistInTempo) {
+            if (cards[num] === cst.CARD_AVAILABLE && !isExistInTempo) {
                 tempoList.push(num)
                 result[j].dealerCard = num
                 break
             }
-            num = (num + 1) % war.availableCards.length
+            num = (num + 1) % cards.length
         }
         // if no more available card
-        if (i === war.availableCards.length) return []
-        num = Math.floor(Math.random() * war.availableCards.length)
+        if (i === cards.length) return []
+        num = Math.floor(Math.random() * cards.length)
         // for playerCardCard
-        for (i = 0; i < war.availableCards.length; i++) {
+        for (i = 0; i < cards.length; i++) {
             isExistInTempo = false
-            for (k = 0; k < tempoList.length; k++) {
-                if (tempoList[i] === num) {
+            for (let k = 0; k < tempoList.length; k++) {
+                if (tempoList[k] === num) {
                     isExistInTempo = true
                     break
                 }
             }
-            if (war.availableCards[i] === localCst.CARD_AVAILABLE && !isExistInTempo) {
+            if (cards[num] === cst.CARD_AVAILABLE && !isExistInTempo) {
                 tempoList.push(num)
                 result[j].playerCard = num
                 break
             }
-            num = (num + 1) % war.availableCards.length
+            num = (num + 1) % cards.length
         }
-        if (i === war.availableCards.length) return []
+        if (i === cards.length) return []
     }
     return result
 }
@@ -70,10 +65,11 @@ const compare = (val1, val2) => {
 const getNewCards = (war) => {
     let newCards = getAnAvailableListCard(war)
     let cards = [...war.playingCards]
-    for (let i = 0; i < cards.length; i++) {
-        cards[i].playerCard = newCards[i].playerCard
-        cards[i].dealerCard = newCards[i].dealerCard
-    }
+    if (newCards.length)
+        for (let i = 0; i < cards.length; i++) {
+            cards[i].playerCard = newCards[i].playerCard
+            cards[i].dealerCard = newCards[i].dealerCard
+        }
     return cards
 }
 
@@ -85,24 +81,24 @@ const getScores = (war) => {
         let winner = compare(cards[i].playerCard, cards[i].dealerCard)
         if (winner === 0) { // tie
             cards[i].cardsWon.push(cards[i].playerCard)
-            availableCards[cards[i].playerCard] = localCst.CARD_TAKEN_BY_PLAYERS // the card won by the player is recorded
-            availableCards[cards[i].dealerCard] = localCst.CARD_AVAILABLE // available again
+            availableCards[cards[i].playerCard] = cst.CARD_TAKEN_BY_PLAYERS // the card won by the player is recorded
+            availableCards[cards[i].dealerCard] = cst.CARD_AVAILABLE // available again
         }
         else if (winner > 0) { // the player wins both cards
             cards[i].cardsWon.push(cards[i].playerCard)
-            availableCards[cards[i].playerCard] = localCst.CARD_TAKEN_BY_PLAYERS // the card won by the player is recorded
+            availableCards[cards[i].playerCard] = cst.CARD_TAKEN_BY_PLAYERS // the card won by the player is recorded
             cards[i].cardsWon.push(cards[i].dealerCard)
-            availableCards[cards[i].dealerCard] = localCst.CARD_TAKEN_BY_PLAYERS // the card won by the player (from the dealer) is recorded
+            availableCards[cards[i].dealerCard] = cst.CARD_TAKEN_BY_PLAYERS // the card won by the player (from the dealer) is recorded
         }
         else {
-            availableCards[cards[i].playerCard] = localCst.CARD_AVAILABLE // available again
-            availableCards[cards[i].dealerCard] = localCst.CARD_AVAILABLE // available again
+            availableCards[cards[i].playerCard] = cst.CARD_AVAILABLE // available again
+            availableCards[cards[i].dealerCard] = cst.CARD_AVAILABLE // available again
         }
         if (cards[i].cardsWon.length > maxScore) maxScore = cards[i].cardsWon.length
     }
     return {
-        availableCards: availableCards,
-        playingCards: cards,
+        availableCards: [...availableCards],
+        playingCards: [...cards],
         maxScore: maxScore
     }
 }
@@ -118,24 +114,24 @@ const warGameActions = {
     playGame: () => {
         return (dispatch, getState) => {
             let war = getState().war
-            let newCards = getNewCards(war)
             if (war.status === cst.PLAY_CARDS_DISTRIBUTE) {
-                if (war.round === 0)
+                if(war.round==0){
                     dispatch({
                         type: cst.PLAY_CARDS_DISTRIBUTE,
-                        payload: newCards
+                        payload: getNewCards(war)
                     })
-                else
-                    dispatch({
-                        type: cst.PLAY_CARDS_SHOW,
-                        payload: getScores(war)
-                    })
+                }
+                dispatch({
+                    type: cst.PLAY_CARDS_SHOW,
+                    payload: getScores(war)
+                })
                 dispatch({
                     type: cst.SET_STATUS,
                     payload: cst.PLAY_CARDS_SHOW
                 })
             }
             else if (war.status === cst.PLAY_CARDS_SHOW) {
+                let newCards = getNewCards(war)
                 // Game OVER!!!!!
                 if (newCards.length === 0 || war.round >= 10) {
                     let location = getState().locations.active
@@ -170,10 +166,6 @@ const warGameActions = {
             else if (war.status === cst.PLAY_END) {
                 dispatch({
                     type: cst.STATUS_SET_NEW_GAME
-                })
-                dispatch({
-                    type: cst.PLAY_CARDS_DISTRIBUTE,
-                    payload: newCards
                 })
             }
         }
@@ -229,8 +221,8 @@ const warGameActions = {
                 id: values.player1,
                 name: pl[0].name,
                 cardsWon: [],
-                dealerCardId: -1,
-                playerCardId: -1
+                dealerCard: -1,
+                playerCard: -1
             })
 
             let obj4loc_player = []
@@ -253,8 +245,8 @@ const warGameActions = {
                     id: values.player2,
                     name: pl[0].name,
                     cardsWon: [],
-                    dealerCardId: -1,
-                    playerCardId: -1
+                    dealerCard: -1,
+                    playerCard: -1
                 })
             }
 
@@ -272,8 +264,8 @@ const warGameActions = {
                     id: values.player3,
                     name: pl[0].name,
                     cardsWon: [],
-                    dealerCardId: -1,
-                    playerCardId: -1
+                    dealerCard: -1,
+                    playerCard: -1
                 })
             }
 
@@ -291,8 +283,8 @@ const warGameActions = {
                     id: values.player4,
                     name: pl[0].name,
                     cardsWon: [],
-                    dealerCardId: -1,
-                    playerCardId: -1
+                    dealerCard: -1,
+                    playerCard: -1
                 })
             }
             axios.post("http://localhost:3090/api/add/loc_dealer/", obj4loc_dealer)

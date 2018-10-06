@@ -43,6 +43,10 @@ const constants = {
     PLAYER_SET_ACTIVE: "players_set_active",
     PLAYER_RESET_ACTIVE: "players_reset_active",
     PLAYERS_4_NEW_GAME: "players_4_new_game",
+    
+    CARD_AVAILABLE: 0,
+    CARD_TAKEN_TEMPO: 1,
+    CARD_TAKEN_BY_PLAYERS: 2
 }
 
 export default constants

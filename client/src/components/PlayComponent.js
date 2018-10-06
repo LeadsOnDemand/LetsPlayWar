@@ -10,78 +10,68 @@ class PlayComponent extends React.Component {
         const val = (cardPosition % 13) + 1
         let type = ""
         if (cardPosition >= 0 && cardPosition < 13) type = cst.SPADES
-        else if(cardPosition >= 13 && cardPosition < 26) type = cst.CLUBS
-        else if(cardPosition >= 26 && cardPosition < 39) type = cst.HEARTS
-        else if(cardPosition >= 39 && cardPosition < 52) type = cst.DIAMS
+        else if (cardPosition >= 13 && cardPosition < 26) type = cst.CLUBS
+        else if (cardPosition >= 26 && cardPosition < 39) type = cst.HEARTS
+        else if (cardPosition >= 39 && cardPosition < 52) type = cst.DIAMS
 
-            return (
-                <div>
-                    {cardPosition === undefined &&
-                        <div className="cardFrame">
-                            <div className="cardInner" style={{ backgroundColor: 'black' }}>
-                                <p align="center">&nbsp;</p>
-                                <p align="center">&nbsp;</p>
-                            </div>
+        return (
+            <div>
+                {cardPosition === undefined &&
+                    <div className="cardFrame">
+                        <div className="cardInner" style={{ backgroundColor: 'black' }}>
+                            <p align="center">&nbsp;</p>
+                            <p align="center">&nbsp;</p>
                         </div>
-                    }
-                    {cardPosition !== undefined &&
-                        <div>
+                    </div>
+                }
+                {cardPosition !== undefined &&
+                    <div className="cardFrame">
+                        <div className="cardInner">
                             {type === cst.SPADES &&
-                                <div className="cardFrame">
-                                    <div className="cardInner">
-                                        <p align="center"><span>&spades;</span></p>
-                                        <p align="center"></p>
-                                        {val < 11 && <p align="center">{val}</p>}
-                                        {val === 11 && <p align="center">J</p>}
-                                        {val === 12 && <p align="center">Q</p>}
-                                        {val === 13 && <p align="center">K</p>}
-                                    </div>
+                                <div>
+                                    <p align="center"><span>&spades;</span></p>
+                                    <p align="center"></p>
+                                    {val < 11 && <p align="center">{val}</p>}
+                                    {val === 11 && <p align="center">J</p>}
+                                    {val === 12 && <p align="center">Q</p>}
+                                    {val === 13 && <p align="center">K</p>}
                                 </div>
                             }
                             {type === cst.CLUBS &&
-                                <div className="cardFrame">
-                                    <div className="cardInner">
-                                        <p align="center"><span >&clubs;</span></p>
-                                        <p align="center"></p>
-                                        {val < 11 && <p align="center">{val}</p>}
-                                        {val === 11 && <p align="center">J</p>}
-                                        {val === 12 && <p align="center">Q</p>}
-                                        {val === 13 && <p align="center">K</p>}
-                                    </div>
+                                <div>
+                                    <p align="center"><span>&clubs;</span></p>
+                                    <p align="center"></p>
+                                    {val < 11 && <p align="center">{val}</p>}
+                                    {val === 11 && <p align="center">J</p>}
+                                    {val === 12 && <p align="center">Q</p>}
+                                    {val === 13 && <p align="center">K</p>}
                                 </div>
                             }
                             {type === cst.HEARTS &&
-                                <div className="cardFrame">
-                                    <div className="cardInner">
-                                        <font color="red">
-                                            <p align="center"><span>&hearts;</span></p>
-                                            <p align="center"></p>
-                                            {val < 11 && <p align="center">{val}</p>}
-                                            {val === 11 && <p align="center">J</p>}
-                                            {val === 12 && <p align="center">Q</p>}
-                                            {val === 13 && <p align="center">K</p>}
-                                        </font>
-                                    </div>
+                                <div style={{ color: 'red' }}>
+                                    <p align="center"><span>&hearts;</span></p>
+                                    <p align="center"></p>
+                                    {val < 11 && <p align="center">{val}</p>}
+                                    {val === 11 && <p align="center">J</p>}
+                                    {val === 12 && <p align="center">Q</p>}
+                                    {val === 13 && <p align="center">K</p>}
                                 </div>
                             }
                             {type === cst.DIAMS &&
-                                <div className="cardFrame">
-                                    <div className="cardInner">
-                                        <font color="red">
-                                            <p align="center"><span>&diams;</span></p>
-                                            <p align="center"></p>
-                                            {val < 11 && <p align="center">{val}</p>}
-                                            {val === 11 && <p align="center">J</p>}
-                                            {val === 12 && <p align="center">Q</p>}
-                                            {val === 13 && <p align="center">K</p>}
-                                        </font>
-                                    </div>
+                                <div style={{ color: 'red' }}>
+                                    <p align="center"><span>&diams;</span></p>
+                                    <p align="center"></p>
+                                    {val < 11 && <p align="center">{val}</p>}
+                                    {val === 11 && <p align="center">J</p>}
+                                    {val === 12 && <p align="center">Q</p>}
+                                    {val === 13 && <p align="center">K</p>}
                                 </div>
                             }
                         </div>
-                    }
-                </div>
-            )
+                    </div>
+                }
+            </div>
+        )
     }
 
     render() {
@@ -89,7 +79,7 @@ class PlayComponent extends React.Component {
         return (
             <div style={{ padding: '0px 10px', width: '80%', margin: 'auto' }}>
                 {location.all.length > 0 &&
-                    <h2 align="center"><strong>({location.active[0].name} - {location.active[0].address})</strong></h2>
+                    <h3 align="center"><strong>({location.active[0].name} - {location.active[0].address})</strong></h3>
                 }
                 <h3 align="center"><button type="button" className="btn" onClick={e => playGame()}>Play</button>&nbsp;&nbsp;&nbsp;
                 <button type="button" className="btn" onClick={e => setResetConfig()}>Set New Config</button>
@@ -98,7 +88,10 @@ class PlayComponent extends React.Component {
                     {war.playingCards.length > 0 &&
                         <table style={{ width: "100%" }}><tbody>
                             {/* ===================== Round Number ===================== */}
-                            <tr style={{ width: "100%", border: "2px solid black", backgroundColor: "black", color: "#00FF00" }}><td colSpan="4"><h2 align="center"><b>Round {war.round}</b></h2></td></tr>
+                            <tr style={{ width: "100%", border: "2px solid black", backgroundColor: "black", color: "#00FF00" }}><td colSpan="4">
+                                {war.round === 0 && <h2 align="center"><b>Round 1</b></h2>}
+                                {war.round > 0 && <h2 align="center"><b>Round {war.round}</b></h2>}
+                            </td></tr>
                             {/* ===================== Dealer's Name ===================== */}
                             <tr style={{ width: "100%", border: "2px solid black", backgroundColor: "#f2ecd6" }}><td colSpan="4">
                                 {dealer.all.length > 0 && <h3 align="center"><b>{dealer.active[0].name}</b> (dealer)</h3>}
