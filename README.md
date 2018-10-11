@@ -59,6 +59,9 @@ We need to setup everything before to start the game:
 ### Got Winner(s)
 ![alt text](assets/gotWinners.jpg)
 
+### Scores (of all players) are recorded on the database
+![alt text](assets/scores.jpg)
+
 ### Players could be between 1 and 4 by table of game
 ![alt text](assets/show2players.jpg)
 
